@@ -24,6 +24,13 @@ const certFilePath = path.join(baseFolder, `${certificateName}.pem`)
 const keyFilePath = path.join(baseFolder, `${certificateName}.key`)
 
 module.exports = {
+  css: {
+    loaderOptions: {
+      sass: {
+        additionalData: `@import '@/scss/global.scss';`,
+      },
+    },
+  },
   devServer: {
     https: {
       key: fs.readFileSync(keyFilePath),
@@ -34,6 +41,7 @@ module.exports = {
         target: 'https://localhost:5001/',
       },
     },
+    host: 'localhost',
     port: 5002,
   },
 }

@@ -1,19 +1,15 @@
-<script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template lang="pug">
-img(alt='Vue logo', src='@/assets/logo.png')
-hello-world(msg='Welcome to Your Vue.js + TypeScript App')
+#main.vh-100.vw-100.bg-1
+  nav-bar
+  router-view
 </template>
 
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+* {
+  @extend .fg-white;
 }
 </style>
+
+<script setup lang="ts">
+import NavBar from '@/components/common/NavBar.vue'
+</script>
