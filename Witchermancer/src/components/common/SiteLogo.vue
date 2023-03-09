@@ -4,7 +4,7 @@ router-link.site-logo(:to='{ name: "Home" }') Witchermancer
 
 <style scoped lang="scss">
 .site-logo {
-  @extend .text-center, .decor-none, .h1;
+  @extend .text-center, .decor-none, .h1, .no-select;
 
   font-family: 'Josefin Sans', sans-serif;
 }

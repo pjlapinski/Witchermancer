@@ -19,10 +19,10 @@
 }
 
 $directions: (
-  t: top,
-  b: bottom,
-  r: right,
-  l: left,
+        t: top,
+        b: bottom,
+        r: right,
+        l: left,
 );
 
 .bg-white {
@@ -132,6 +132,10 @@ $directions: (
   display: flex;
 }
 
+.d-none {
+  display: none;
+}
+
 .flex-grow-1 {
   flex-grow: 1;
 }
@@ -175,4 +179,16 @@ $directions: (
 .flex-center {
   justify-content: center;
   align-items: center;
+}
+
+.btn-subtle {
+  @extend .h2, .d-flex, .flex-center, .cursor-ptr, .no-select;
+  background: none;
+  border: none;
+}
+
+.no-select {
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }

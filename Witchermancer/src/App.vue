@@ -2,6 +2,7 @@
 #main.vh-100.vw-100.bg-1
   nav-bar
   router-view
+  side-bar
 </template>
 
 <style lang="scss">
@@ -12,4 +13,5 @@
 
 <script setup lang="ts">
 import NavBar from '@/components/common/NavBar.vue'
+import SideBar from '@/components/common/SideBar.vue'
 </script>
