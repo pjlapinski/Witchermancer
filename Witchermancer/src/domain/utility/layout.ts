@@ -1,1 +1,5 @@
-﻿export const smallScreen = () => window.innerWidth <= 768
+﻿const smallScreenThreshold = 768
+
+export const smallScreen = () =>
+  window.innerWidth <= smallScreenThreshold ||
+  window.innerHeight <= smallScreenThreshold

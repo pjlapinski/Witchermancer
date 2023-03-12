@@ -2,12 +2,12 @@
 #sidebar-screen-cover(
   @click='store.toggleSidebar()',
   :class='{ "sidebar-hidden": !store.isSidebarOpen }',
-  v-if='!useMobile'
+  v-if='!useSmall'
 )
 #sidebar(
-  :class='[useMobile ? "sidebar-mobile" : "sidebar-large", { "sidebar-hidden": !store.isSidebarOpen }]'
+  :class='[useSmall ? "sidebar-small" : "sidebar-large", { "sidebar-hidden": !store.isSidebarOpen }]'
 )
-  .pt-3(v-if='useMobile')
+  .pt-3(v-if='useSmall')
     button#close-sidebar-btn(@click='store.toggleSidebar()') X
   #sidebar-items
     .sidebar-item
@@ -29,13 +29,13 @@ import { onMounted, onUnmounted, ref } from 'vue'
 
 const store = useGlobalStore()
 
-const useMobile = ref(smallScreen())
+const useSmall = ref(smallScreen())
 
-const updateUseMobile = () => {
-  useMobile.value = smallScreen()
+const updateUseSmall = () => {
+  useSmall.value = smallScreen()
 }
-onMounted(() => addEventListener('resize', updateUseMobile))
-onUnmounted(() => removeEventListener('resize', updateUseMobile))
+onMounted(() => addEventListener('resize', updateUseSmall))
+onUnmounted(() => removeEventListener('resize', updateUseSmall))
 </script>
 
 <style scoped lang="scss">
@@ -56,7 +56,7 @@ $sidebar-large-width: 200px;
   @extend .d-flex, .flex-grow-1, .pb-5, .pt-3;
   flex-direction: column;
 
-  .sidebar-mobile & {
+  .sidebar-small & {
     @extend .mx-3;
   }
 
@@ -65,7 +65,7 @@ $sidebar-large-width: 200px;
   }
 }
 
-.sidebar-mobile {
+.sidebar-small {
   width: 100vw;
   transition: translate ease-in-out $transition-duration;
 
