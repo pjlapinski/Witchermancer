@@ -1,0 +1,208 @@
+﻿* {
+  padding: 0;
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+}
+
+:root {
+  --size-unit: 0.25rem;
+  --color-1: #403f4c;
+  --color-2: #2c2b3c;
+  --color-3: #1b2432;
+  --color-4: #121420;
+  --color-5: #b76d68;
+  --color-white: #f3f4f4;
+}
+
+@function sizeof($sz) {
+  @return calc(var(--size-unit) * #{$sz});
+}
+
+$directions: (
+        t: top,
+        b: bottom,
+        r: right,
+        l: left,
+);
+
+.bg-white {
+  background-color: var(--color-white);
+}
+
+.fg-white {
+  color: var(--color-white);
+}
+
+@for $i from 1 through 5 {
+  .bg-#{$i} {
+    background-color: var(--color-#{$i});
+  }
+
+  .fg-#{$i} {
+    color: var(--color-#{$i});
+  }
+}
+
+@for $i from 1 through 5 {
+  .p-#{$i} {
+    padding: #{sizeof($i)};
+  }
+
+  .m-#{$i} {
+    margin: #{sizeof($i)};
+  }
+
+  @each $abbr, $val in $directions {
+    .p#{$abbr}-#{$i} {
+      padding-#{$val}: #{sizeof($i)};
+    }
+
+    .m#{$abbr}-#{$i} {
+      margin-#{$val}: #{sizeof($i)};
+    }
+  }
+
+  .px-#{$i} {
+    padding-left: #{sizeof($i)};
+    padding-right: #{sizeof($i)};
+  }
+
+  .py-#{$i} {
+    padding-top: #{sizeof($i)};
+    padding-bottom: #{sizeof($i)};
+  }
+
+  .mx-#{$i} {
+    margin-left: #{sizeof($i)};
+    margin-right: #{sizeof($i)};
+  }
+
+  .my-#{$i} {
+    margin-top: #{sizeof($i)};
+    margin-bottom: #{sizeof($i)};
+  }
+}
+
+@each $abbr, $val in $directions {
+  .p#{$abbr}-auto {
+    padding-#{$val}: auto;
+  }
+
+  .m#{$abbr}-auto {
+    margin-#{$val}: auto;
+  }
+
+  .mx-auto {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .my-auto {
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+}
+
+.vh-100 {
+  height: 100vh;
+}
+
+.vw-100 {
+  width: 100vw;
+}
+
+.h-100 {
+  height: 100%;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.text-white {
+  color: var(--color-white);
+}
+
+.btn {
+  @extend .p-2;
+  border: 1px solid var(--color-4);
+}
+
+.d-flex {
+  display: flex;
+}
+
+.d-none {
+  display: none;
+}
+
+.flex-grow-1 {
+  flex-grow: 1;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.cursor-ptr {
+  cursor: pointer;
+}
+
+.decor-none {
+  text-decoration: none;
+}
+
+.h1 {
+  font-size: 2em;
+}
+
+.h2 {
+  font-size: 1.5em;
+}
+
+.h3 {
+  font-size: 1.17em;
+}
+
+.h4 {
+  font-size: 1em;
+}
+
+.h5 {
+  font-size: 0.83em;
+}
+
+.h6 {
+  font-size: 0.67em;
+}
+
+.flex-center {
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-subtle {
+  @extend .h2, .d-flex, .flex-center, .cursor-ptr, .no-select;
+  background: none;
+  border: none;
+}
+
+.no-scroll-y {
+  overflow-y: hidden;
+  -ms-overflow-y: hidden;
+}
+
+.no-scroll-x {
+  overflow-x: hidden;
+  -ms-overflow-x: hidden;
+}
+
+.no-scroll {
+  @extend .no-scroll-x, .no-scroll-y;
+}
+
+.no-select {
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
