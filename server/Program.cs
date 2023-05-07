@@ -14,6 +14,15 @@ builder.Services
         options.AuthorizationEndpoint += "?prompt=consent";
         options.AccessType = "offline";
         options.SaveTokens = true;
+
+        options.Events.OnRedirectToAuthorizationEndpoint = arg =>
+        {
+            if (!arg.RedirectUri.Contains("redirect_uri=https", StringComparison.OrdinalIgnoreCase))
+                arg.RedirectUri = arg.RedirectUri.Replace("redirect_uri=http", "redirect_uri=https",
+                    StringComparison.OrdinalIgnoreCase);
+            arg.HttpContext.Response.Redirect(arg.RedirectUri);
+            return Task.CompletedTask;
+        };
     });
 
 builder.Services.AddControllers();
