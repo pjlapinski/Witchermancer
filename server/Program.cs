@@ -3,6 +3,8 @@ using Witchermancer.Routing;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.Configure<CookiePolicyOptions>(options => { options.Secure = CookieSecurePolicy.Always; });
+
 builder.Services
     .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie()
@@ -30,6 +32,7 @@ builder.Services.AddControllers();
 
 var app = builder.Build();
 
+app.UseCookiePolicy();
 app.UseAuthentication();
 
 app.UseHttpsRedirection();
@@ -40,7 +43,5 @@ app.UseRouteDefinitions();
 
 app.MapGet("/api/hello",
     (HttpContext ctx) => ctx.User.Claims.Select(x => new {x.Type, x.Value}).ToList());
-app.MapGet("/api/path",
-    (HttpContext ctx) => $"{ctx.Request.Scheme}://{ctx.Request.Host}{ctx.Request.PathBase}");
 
 app.Run();
