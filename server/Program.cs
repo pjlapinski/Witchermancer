@@ -4,6 +4,7 @@ using Witchermancer.Routing;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.Configure<CookiePolicyOptions>(options => { options.Secure = CookieSecurePolicy.Always; });
+
 builder.Services
     .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie()
@@ -25,20 +26,14 @@ builder.Services
             return Task.CompletedTask;
         };
     });
+
 builder.Services.AddControllers();
 
 
 var app = builder.Build();
 
 app.UseCookiePolicy();
-app.Use(async (ctx, next) =>
-{
-    var logger = ctx.RequestServices.GetService<ILogger<Program>>();
-    logger!.LogInformation("Request from: {}://{}{}", ctx.Request.Scheme, ctx.Request.Host, ctx.Request.Path);
-    await next(ctx);
-});
 app.UseAuthentication();
-
 
 app.UseHttpsRedirection();
 app.UseDefaultFiles();
