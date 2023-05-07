@@ -33,6 +33,18 @@ builder.Services.AddControllers();
 var app = builder.Build();
 
 app.UseCookiePolicy();
+app.Use(async (ctx, next) =>
+{
+    if (ctx.Request.Scheme != "https")
+    {
+        var logger = ctx.RequestServices.GetRequiredService<ILogger<Program>>();
+        logger.LogInformation("Request to {}://{}{} changed to https://{}{}", ctx.Request.Scheme, ctx.Request.Host,
+            ctx.Request.PathBase, ctx.Request.Host, ctx.Request.PathBase);
+        ctx.Request.Scheme = "https";
+    }
+
+    await next(ctx);
+});
 app.UseAuthentication();
 
 app.UseHttpsRedirection();
