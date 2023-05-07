@@ -31,5 +31,7 @@ app.UseRouteDefinitions();
 
 app.MapGet("/api/hello",
     (HttpContext ctx) => ctx.User.Claims.Select(x => new {x.Type, x.Value}).ToList());
+app.MapGet("/api/path",
+    (HttpContext ctx) => $"{ctx.Request.Scheme}://{ctx.Request.Host}{ctx.Request.PathBase}");
 
 app.Run();
