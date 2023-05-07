@@ -16,12 +16,12 @@ RUN dotnet restore "server/server.csproj"
 WORKDIR "/src/server"
 COPY ["server/", "./"]
 RUN dotnet build "server.csproj" -c Release -o /app/build
+RUN dotnet dev-certs https -t
 WORKDIR "/src/frontend"
 COPY ["Witchermancer/package.json", "Witchermancer/package-lock.json", "./"]
 RUN npm i
 COPY ["Witchermancer/", "./"]
 ENV npm_package_name="witchermancer"
-RUN node scripts/aspnetcore-https.js
 RUN npm run build
 
 FROM build AS publish
