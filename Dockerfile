@@ -18,9 +18,9 @@ COPY ["server/", "./"]
 RUN dotnet build "server.csproj" -c Release -o /app/build
 RUN dotnet dev-certs https -t
 WORKDIR "/src/frontend"
-COPY ["Witchermancer/package.json", "Witchermancer/package-lock.json", "./"]
+COPY ["client/package.json", "client/package-lock.json", "./"]
 RUN npm i
-COPY ["Witchermancer/", "./"]
+COPY ["client/", "./"]
 ENV npm_package_name="witchermancer"
 RUN node scripts/aspnetcore-https.js
 RUN npm run build
