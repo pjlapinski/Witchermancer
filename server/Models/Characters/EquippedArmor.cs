@@ -1,6 +1,6 @@
 ﻿using Witchermancer.Models.Equipment;
 
-namespace Witchermancer.Models.Character;
+namespace Witchermancer.Models.Characters;
 
 public record EquippedArmor(
     Armor? Head,

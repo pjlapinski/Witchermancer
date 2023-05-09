@@ -1,4 +1,4 @@
-﻿namespace Witchermancer.Models.Character.Statistics;
+﻿namespace Witchermancer.Models.Characters.Statistics;
 
 public record EmpathySkills(
     Skill Charisma,

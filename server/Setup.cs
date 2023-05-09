@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Witchermancer.Middleware;
+using Witchermancer.Models.Config;
 using Witchermancer.Routing;
+using Witchermancer.Services;
 
 namespace Witchermancer;
 
@@ -14,11 +16,12 @@ public static class Setup
 
         builder.Services
             .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-            .AddCookie()
+            .AddCookie(options => { options.LoginPath = "/api/login"; })
             .AddGoogle(options =>
             {
-                options.ClientId = builder.Configuration["Google:ClientId"];
-                options.ClientSecret = builder.Configuration["Google:ClientSecret"];
+                var settings = builder.Configuration.GetSection("Google").Get<GoogleSettings>();
+                options.ClientId = settings.ClientId;
+                options.ClientSecret = settings.ClientSecret;
                 options.CallbackPath = new PathString("/api/signin-google");
                 options.AuthorizationEndpoint += "?prompt=consent";
                 options.AccessType = "offline";
@@ -33,6 +36,11 @@ public static class Setup
                     return Task.CompletedTask;
                 };
             });
+        builder.Services.AddAuthorization(options => { options.InvokeHandlersAfterFailure = false; });
+
+        builder.Services.Configure<CharactersStoreDatabaseSettings>(builder.Configuration.GetSection("MongoDb"));
+        builder.Services.AddSingleton<CharactersService>();
+
         return new WitchermancerBuilder(builder);
     }
 }
@@ -53,6 +61,7 @@ public class WitchermancerBuilder
         app.UseCookiePolicy();
         app.UseRequestSchemeForceHttps();
         app.UseAuthentication();
+        app.UseAuthorization();
 
         app.UseHttpsRedirection();
         app.UseDefaultFiles();

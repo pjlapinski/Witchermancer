@@ -36,6 +36,8 @@ export type Modifiers = {
 }
 
 export type Character = {
+  id?: string
+  ownerEmail?: string
   name: string
   race: Race
   gender: string
