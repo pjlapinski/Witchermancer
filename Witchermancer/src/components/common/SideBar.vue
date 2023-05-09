@@ -1,13 +1,10 @@
 ﻿<template lang="pug">
 #sidebar-screen-cover(
   @click='store.toggleSidebar()',
-  :class='{ "sidebar-hidden": !store.isSidebarOpen }',
-  v-if='!useSmall'
+  :class='{ "sidebar-hidden": !store.isSidebarOpen }'
 )
-#sidebar(
-  :class='[useSmall ? "sidebar-small" : "sidebar-large", { "sidebar-hidden": !store.isSidebarOpen }]'
-)
-  .pt-3(v-if='useSmall')
+#sidebar(:class='{ "sidebar-hidden": !store.isSidebarOpen }')
+  #close-sidebar-btn-wrapper
     button#close-sidebar-btn(@click='store.toggleSidebar()') X
   #sidebar-items
     .sidebar-item
@@ -23,19 +20,9 @@
 </template>
 
 <script setup lang="ts">
-import { smallScreen } from '@/domain/utility/layout'
 import { useGlobalStore } from '@/domain/store/global'
-import { onMounted, onUnmounted, ref } from 'vue'
 
 const store = useGlobalStore()
-
-const useSmall = ref(smallScreen())
-
-const updateUseSmall = () => {
-  useSmall.value = smallScreen()
-}
-onMounted(() => addEventListener('resize', updateUseSmall))
-onUnmounted(() => removeEventListener('resize', updateUseSmall))
 </script>
 
 <style scoped lang="scss">
@@ -65,7 +52,7 @@ $sidebar-large-width: 200px;
   }
 }
 
-.sidebar-small {
+#sidebar {
   width: 100vw;
   transition: translate ease-in-out $transition-duration;
 
@@ -76,19 +63,29 @@ $sidebar-large-width: 200px;
   }
 }
 
-.sidebar-large {
-  width: $sidebar-large-width;
-  box-shadow: 2px 0 10px black;
-  transition: translate ease-in-out $transition-duration;
-
-  &.sidebar-hidden {
-    translate: -$sidebar-large-width;
-    box-shadow: none;
-  }
+#close-sidebar-btn-wrapper {
+  @extend .pt-3;
 }
 
 #close-sidebar-btn {
-  @extend .btn-subtle, .px-3;
+  @extend .btn-subtle, .px-3, .pt-3;
+}
+
+@media only screen and (min-width: 768px) {
+  #sidebar {
+    width: $sidebar-large-width;
+    box-shadow: 2px 0 10px black;
+    transition: translate ease-in-out $transition-duration;
+
+    &.sidebar-hidden {
+      translate: -$sidebar-large-width;
+      box-shadow: none;
+    }
+  }
+
+  #close-sidebar-btn-wrapper {
+    display: none;
+  }
 }
 
 .sidebar-item {
