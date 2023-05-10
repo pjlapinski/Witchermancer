@@ -20,6 +20,7 @@ RUN dotnet dev-certs https -t
 WORKDIR "/src/frontend"
 COPY ["client/package.json", "client/package-lock.json", "./"]
 RUN npm i
+RUN node scripts/fetchLocalization.js
 COPY ["client/", "./"]
 ENV npm_package_name="witchermancer"
 RUN node scripts/aspnetcore-https.js
