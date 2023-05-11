@@ -1,31 +1,44 @@
 ﻿<template lang="pug">
 #sidebar-screen-cover(
-  @click='store.toggleSidebar()',
+  @click='handleScreenCoverClick()',
   :class='{ "sidebar-hidden": !store.isSidebarOpen }'
 )
 #sidebar(:class='{ "sidebar-hidden": !store.isSidebarOpen }')
-  #close-sidebar-btn-wrapper
-    button#close-sidebar-btn(@click='store.toggleSidebar()') X
-  #sidebar-items
-    .sidebar-item
-      span item 1
-      span icon1
-    .sidebar-item
-      span item 2
-      span icon2
-    #items-separator
-    .sidebar-item
-      span logout
-      span icon3
+  template(v-if='state === "default"')
+    #close-sidebar-btn-wrapper
+      button#close-sidebar-btn(@click='store.toggleSidebar()') X
+    #sidebar-items
+      .sidebar-item(@click='state = "langSelect"') {{ $t('langSelect') }}
+      #items-separator
+      .sidebar-item(@click='handleLoginClick()') {{ $t(user.isAuthenticated ? 'logout' : 'login') }}
+  template(v-else-if='state === "langSelect"')
+    lang-list(@close='state = "default"')
 </template>
 
 <script setup lang="ts">
 import { useGlobalStore } from '@/domain/store/global'
+import { useUserStore } from '@/domain/store/user'
+import { ref } from 'vue'
+import LangList from '@/components/sidebar/LangList.vue'
+
+type SidebarState = 'default' | 'langSelect'
 
 const store = useGlobalStore()
+const user = useUserStore()
+
+const state = ref<SidebarState>('default')
+
+const handleScreenCoverClick = () => {
+  store.toggleSidebar()
+  state.value = 'default'
+}
+const handleLoginClick = () =>
+  (window.location.pathname = user.isAuthenticated
+    ? '/api/logout'
+    : '/api/login')
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 $transition-duration: 0.2s;
 $sidebar-large-width: 200px;
 
@@ -93,6 +106,7 @@ $sidebar-large-width: 200px;
 
   border-radius: 8px;
   justify-content: space-between;
+  align-items: center;
 
   &:hover {
     @extend .bg-1;

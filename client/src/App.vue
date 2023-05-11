@@ -12,6 +12,6 @@
 </style>
 
 <script setup lang="ts">
-import NavBar from '@/components/common/NavBar.vue'
-import SideBar from '@/components/common/SideBar.vue'
+import NavBar from '@/components/nav/NavBar.vue'
+import SideBar from '@/components/sidebar/SideBar.vue'
 </script>

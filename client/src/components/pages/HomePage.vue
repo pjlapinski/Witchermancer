@@ -1,19 +1,22 @@
-﻿<template lang='pug'>
-| {{ $t('test') }}
-| {{ character }}
+﻿<template lang="pug">
+template(v-if='user.isAuthenticated')
+  div(v-for='char in characters', v-if='characters.length > 0')
+    | {{ char.name }}
+  div(v-else) No characters!
+template(v-else)
+  div login!
 </template>
 
-<script setup lang='ts'>
-import { ref } from 'vue'
+<script setup lang="ts">
+import { reactive } from 'vue'
+import { Character } from '@/domain/types/character'
+import { getUserCharacters } from '@/domain/api'
+import { useUserStore } from '@/domain/store/user'
 
-let character = ref<string | undefined>(undefined)
+let user = useUserStore()
 
-const fetchData = () => {
-  character.value = undefined
-  fetch('api/hello')
-    .then(r => r.text())
-    .then(t => (character.value = t))
-}
+let characters = reactive<Character[]>([])
 
-fetchData()
+if (user.isAuthenticated)
+  getUserCharacters().then(chars => (characters = chars))
 </script>
