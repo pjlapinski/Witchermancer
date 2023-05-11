@@ -1,7 +1,7 @@
 <template lang="pug">
 #sidebar-items
-  .sidebar-item(@click='emit("close")')
-    span#arrow-close &lsaquo;
+  #lang-list-title
+    span#lang-list-arrow-close(@click='emit("close")') &lsaquo;
     span {{ $t('langSelect') }}
   #items-separator
     .sidebar-item(
@@ -25,7 +25,22 @@ const handleLocaleClick = (lang: string) => {
 }
 </script>
 <style scoped lang="scss">
-#arrow-close {
-  @extend .h1, .ml-2, .pb-1;
+#lang-list-title {
+  @extend .p-1, .d-flex, .pr-5;
+
+  justify-content: space-between;
+  align-items: center;
+}
+
+#lang-list-arrow-close {
+  @extend .h1, .pb-1, .cursor-ptr, .no-select;
+
+  padding-left: #{sizeof(2)};
+  padding-right: #{sizeof(2)};
+  border-radius: 8px;
+
+  &:hover {
+    @extend .bg-1;
+  }
 }
 </style>

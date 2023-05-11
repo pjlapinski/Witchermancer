@@ -19,10 +19,10 @@
 }
 
 $directions: (
-        t: top,
-        b: bottom,
-        r: right,
-        l: left,
+  t: top,
+  b: bottom,
+  r: right,
+  l: left,
 );
 
 .bg-white {
@@ -179,6 +179,10 @@ $directions: (
 .flex-center {
   justify-content: center;
   align-items: center;
+}
+
+.flex-col {
+  flex-direction: column;
 }
 
 .btn-subtle {
