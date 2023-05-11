@@ -7,10 +7,8 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /
-ARG GOOGLE__CLIENT_SECRET
-RUN echo $GOOGLE__CLIENT_SECRET
 ARG VUE_APP_LOCALIZATION_URL
-RUN echo $VUE_APP_LOCALIZATION_URL
+ENV VUE_APP_LOCALIZATION_URL=$VUE_APP_LOCALIZATION_URL
 RUN apt-get update; \
     apt-get install -y curl; \
     curl -sL https://deb.nodesource.com/setup_18.x | bash; \
