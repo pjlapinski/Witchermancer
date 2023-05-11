@@ -12,7 +12,7 @@ const pinia = createPinia()
 fetchLocalization().then(locales => {
   const i18n = createI18n({
     legacy: false,
-    locale: 'en',
+    locale: localStorage.getItem('locale') ?? 'en',
     messages: locales,
     globalInjection: true,
   })

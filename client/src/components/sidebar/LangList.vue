@@ -20,6 +20,7 @@ const i18n = useI18n()
 const emit = defineEmits(['close'])
 const handleLocaleClick = (lang: string) => {
   i18n.locale.value = lang
+  localStorage.setItem('locale', lang)
   emit('close')
 }
 </script>
