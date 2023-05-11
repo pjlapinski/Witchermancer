@@ -1,7 +1,5 @@
 #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
-ARG VUE_APP_LOCALIZATION_URL
-
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
 EXPOSE 80
@@ -9,6 +7,9 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /
+ARG GOOGLE__CLIENT_SECRET
+RUN echo $GOOGLE__CLIENT_SECRET
+ARG VUE_APP_LOCALIZATION_URL
 RUN echo $VUE_APP_LOCALIZATION_URL
 RUN apt-get update; \
     apt-get install -y curl; \
