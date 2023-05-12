@@ -1,6 +1,6 @@
 ﻿<template lang="pug">
 main#home-page-content(v-if='user.isAuthenticated')
-  button.btn-subtle {{ $t('home.createCharacter') }}
+  button.btn-subtle(@click='handleCreateCharacterBtnClick()') {{ $t('home.createCharacter') }}
   characters-list(:characters='characters')
 main#home-page-content(v-else)
   h1 {{ $t('home.greeting') }}
@@ -12,16 +12,22 @@ main#home-page-content(v-else)
 <script setup lang="ts">
 import CharactersList from '@/components/home/CharactersList.vue'
 import { reactive } from 'vue'
+import { useRouter } from 'vue-router'
 import { getUserCharacters } from '@/domain/api'
 import { useUserStore } from '@/domain/store/user'
 import type { Character } from '@/domain/types/character.d.ts'
 
-let user = useUserStore()
+const router = useRouter()
+const user = useUserStore()
 
 let characters = reactive<Character[]>([])
 
 if (user.isAuthenticated)
   getUserCharacters().then(chars => (characters = chars))
+
+const handleCreateCharacterBtnClick = () => {
+  router.push({ name: 'CreateCharacter' })
+}
 
 const handleSignInBtnClick = () => {
   window.location.pathname = '/api/login'
