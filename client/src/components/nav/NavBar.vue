@@ -6,7 +6,7 @@ nav
 </template>
 
 <script setup lang="ts">
-import SiteLogo from '@/components/common/SiteLogo.vue'
+import SiteLogo from '@/components/nav/SiteLogo.vue'
 import { useGlobalStore } from '@/domain/store/global'
 import { useRoute } from 'vue-router'
 import { watch } from 'vue'
