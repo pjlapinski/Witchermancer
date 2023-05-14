@@ -50,6 +50,7 @@ h2 {
   @extend .input, .h3;
 
   resize: vertical;
+  min-height: #{sizeof(11)};
 }
 
 .plus-minus-wrapper {
