@@ -15,7 +15,7 @@ export const createDefaultCharacter = (): Character => {
     name: '',
     race: {
       name: '',
-      perks: [],
+      perks: [{ name: '', description: '' }],
     },
     gender: '',
     age: -1,
@@ -149,7 +149,7 @@ export const getPhysicalTableScore = (character: Character) =>
       getModifier(character, 'body') +
       character.statistics.will.level +
       getModifier(character, 'will')) /
-    2,
+      2,
   )
 export const getStunScore = (character: Character) =>
   getPhysicalTableScore(character) * 10
@@ -172,20 +172,18 @@ export const getBonusMeleeDamage = (character: Character) =>
   Math.ceil(
     (character.statistics.body.level + getModifier(character, 'body')) / 2,
   ) *
-  2 -
+    2 -
   6
-export const getPunchDamage = (character: Character): DieRoll =>
-  ({
-    diceAmount: 1,
-    diceType: 6,
-    modifier: getBonusMeleeDamage(character),
-  })
-export const getKickDamage = (character: Character): DieRoll =>
-  ({
-    diceAmount: 1,
-    diceType: 6,
-    modifier: getBonusMeleeDamage(character) + 4,
-  })
+export const getPunchDamage = (character: Character): DieRoll => ({
+  diceAmount: 1,
+  diceType: 6,
+  modifier: getBonusMeleeDamage(character),
+})
+export const getKickDamage = (character: Character): DieRoll => ({
+  diceAmount: 1,
+  diceType: 6,
+  modifier: getBonusMeleeDamage(character) + 4,
+})
 export const getVigor = (character: Character) => {
   const base = character.profession.vigor
   return base === 0 ? 0 : base + getModifier(character, 'vigor')

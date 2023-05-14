@@ -125,7 +125,24 @@ $directions: (
 
 .btn {
   @extend .p-2;
-  border: 1px solid var(--color-4);
+
+  background-color: var(--color-4);
+  border: none;
+
+  &:disabled {
+    background-color: var(--color-3);
+  }
+
+  &:active:enabled {
+    background-color: var(--color-2);
+  }
+}
+
+.input {
+  @extend .p-2;
+
+  background-color: var(--color-2);
+  border: none;
 }
 
 .d-flex {
@@ -189,6 +206,10 @@ $directions: (
   @extend .h2, .d-flex, .flex-center, .cursor-ptr, .no-select;
   background: none;
   border: none;
+
+  &:disabled {
+    cursor: default;
+  }
 }
 
 .no-scroll-y {

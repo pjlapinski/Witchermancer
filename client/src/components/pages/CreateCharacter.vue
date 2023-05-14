@@ -2,11 +2,13 @@
 main#character-creation
   #character-creation-stage
     button.stage-btn(:disabled='creationStep === 0', @click='--creationStep') &lsaquo;
-    span.color-5 {{ $t(`characterCration.step.${creationStep}`) }}
-    button.stage-btn(@click='++creationStep') &rsaquo;
+    span.color-5 {{ $t(`characterCreation.step.${creationStep}`) }}
+    button.stage-btn(:disabled='creationStep === 5', @click='++creationStep') &rsaquo;
   character-creation-first-stage(
     v-if='creationStep === 0',
-    :character='character'
+    :character='character',
+    @add-perk='handleAddRacialPerk',
+    @remove-perk='handleRemoveRacialPerk'
   )
 </template>
 <script setup lang="ts">
@@ -17,12 +19,28 @@ import CharacterCreationFirstStage from '@/components/createCharacter/CharacterC
 
 const character = reactive<Character>(createDefaultCharacter())
 const creationStep = ref<number>(0)
-</script>
-<style scoped lang="scss">
-#character-creation {
-  @extend .d-flex, .flex-col, .text-center, .p-3;
 
-  align-items: center;
+const handleAddRacialPerk = () => {
+  character.race.perks.push({ name: '', description: '' })
+}
+const handleRemoveRacialPerk = () => {
+  if (character.race.perks.length > 1) {
+    character.race.perks.pop()
+  }
+}
+</script>
+<style lang="scss">
+.character-creation-stage-content {
+  @extend .d-flex, .flex-col;
+
+  gap: 1vh;
+}
+
+#character-creation {
+  @extend .d-flex, .flex-col, .text-center, .p-3, .mx-auto;
+
+  align-items: stretch;
+  width: 90%;
 }
 
 .color-5 {
@@ -34,6 +52,7 @@ const creationStep = ref<number>(0)
 
   &:disabled {
     color: var(--color-3);
+    cursor: default;
   }
 }
 
@@ -43,11 +62,10 @@ const creationStep = ref<number>(0)
   justify-content: space-between;
   align-items: center;
   background-color: var(--color-2);
-  width: 90%;
 }
 
 @media only screen and (min-width: 768px) {
-  #character-creation-stage {
+  #character-creation {
     width: 40%;
   }
 }
