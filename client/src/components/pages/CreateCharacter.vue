@@ -3,31 +3,70 @@ main#character-creation
   #character-creation-stage
     button.stage-btn(:disabled='creationStep === 0', @click='--creationStep') &lsaquo;
     span.color-5 {{ $t(`characterCreation.step.${creationStep}`) }}
-    button.stage-btn(:disabled='creationStep === 5', @click='++creationStep') &rsaquo;
-  character-creation-first-stage(
+    button.stage-btn(:disabled='creationStep === 6', @click='++creationStep') &rsaquo;
+  character-creation-race-stage(
     v-if='creationStep === 0',
     :character='character',
     @add-perk='handleAddRacialPerk',
     @remove-perk='handleRemoveRacialPerk'
   )
+  character-creation-profession-stage(
+    v-if='creationStep === 1',
+    :character='character'
+  )
+  character-creation-magic-stage(
+    v-if='creationStep === 2',
+    :character='character',
+    @add-spell='handleAddSpell',
+    @remove-spell='handleRemoveSpell',
+    @add-hex='handleAddHex',
+    @remove-hex='handleRemoveHex',
+    @add-ritual='handleAddRitual',
+    @remove-ritual='handleRemoveRitual'
+  )
+  character-creation-statistics-stage(
+    v-if='creationStep === 3',
+    :character='character'
+  )
 </template>
 <script setup lang="ts">
-import type { Character } from '@/domain/types/character'
 import { ref, reactive } from 'vue'
 import { createDefaultCharacter } from '@/domain/utility/character'
-import CharacterCreationFirstStage from '@/components/createCharacter/CharacterCreationFirstStage.vue'
+import CharacterCreationRaceStage from '@/components/createCharacter/CharacterCreationRaceStage.vue'
+import CharacterCreationProfessionStage from '@/components/createCharacter/CharacterCreationProfessionStage.vue'
+import CharacterCreationMagicStage from '@/components/createCharacter/CharacterCreationMagicStage.vue'
+import CharacterCreationStatisticsStage from '@/components/createCharacter/CharacterCreationStatisticsStage.vue'
 
-const character = reactive<Character>(createDefaultCharacter())
-const creationStep = ref<number>(0)
+const character = reactive(createDefaultCharacter())
+const creationStep = ref(0)
 
-const handleAddRacialPerk = () => {
+const handleAddRacialPerk = () =>
   character.race.perks.push({ name: '', description: '' })
-}
 const handleRemoveRacialPerk = () => {
   if (character.race.perks.length > 1) {
     character.race.perks.pop()
   }
 }
+const handleAddSpell = () =>
+  character.spells.push({ name: '', cost: '', effect: '', range: '' })
+const handleRemoveSpell = () => character.spells.pop()
+
+const handleAddHex = () => {
+  character.hexes.push({ name: '', cost: '', effect: '' })
+}
+const handleRemoveHex = () => character.hexes.pop()
+
+const handleAddRitual = () => {
+  character.rituals.push({
+    name: '',
+    components: '',
+    cost: '',
+    difficultyClass: '',
+    effect: '',
+    time: '',
+  })
+}
+const handleRemoveRitual = () => character.rituals.pop()
 </script>
 <style lang="scss">
 .character-creation-stage-content {
@@ -68,5 +107,43 @@ const handleRemoveRacialPerk = () => {
   #character-creation {
     width: 40%;
   }
+}
+
+.input-h3 {
+  @extend .input, .h3;
+}
+
+.textarea-h3 {
+  @extend .input-h3;
+
+  resize: none;
+}
+
+.items-list {
+  @extend .d-flex, .flex-col;
+
+  gap: 1vh;
+}
+
+.fields-collection {
+  @extend .d-flex, .flex-col;
+
+  gap: 2px;
+}
+
+.btn-large {
+  @extend .btn, .h3;
+
+  flex-grow: 1;
+}
+
+.btns-large-wrapper {
+  @extend .d-flex;
+
+  gap: #{sizeof(2)};
+}
+
+h2 {
+  font-weight: normal;
 }
 </style>

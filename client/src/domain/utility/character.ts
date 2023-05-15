@@ -3,11 +3,11 @@ import { DieRoll } from '@/domain/types/common'
 
 export const createDefaultCharacter = (): Character => {
   const defaultSkill = (): Skill => ({
-    level: -1,
+    level: 0,
     difficult: false,
   })
   const difficultSkill = (): Skill => ({
-    level: -1,
+    level: 0,
     difficult: true,
   })
 
@@ -18,10 +18,10 @@ export const createDefaultCharacter = (): Character => {
       perks: [{ name: '', description: '' }],
     },
     gender: '',
-    age: -1,
+    age: 0,
     statistics: {
       intelligence: {
-        level: -1,
+        level: 0,
         skills: {
           Awareness: defaultSkill(),
           Business: defaultSkill(),
@@ -39,7 +39,7 @@ export const createDefaultCharacter = (): Character => {
         },
       },
       reflex: {
-        level: -1,
+        level: 0,
         skills: {
           Brawling: defaultSkill(),
           DodgeEscape: defaultSkill(),
@@ -52,7 +52,7 @@ export const createDefaultCharacter = (): Character => {
         },
       },
       dexterity: {
-        level: -1,
+        level: 0,
         skills: {
           Archery: defaultSkill(),
           Athletics: defaultSkill(),
@@ -62,15 +62,15 @@ export const createDefaultCharacter = (): Character => {
         },
       },
       body: {
-        level: -1,
+        level: 0,
         skills: {
           Physique: defaultSkill(),
           Endurance: defaultSkill(),
         },
       },
-      speed: { level: -1 },
+      speed: { level: 0 },
       empathy: {
-        level: -1,
+        level: 0,
         skills: {
           Charisma: defaultSkill(),
           Deceit: defaultSkill(),
@@ -85,7 +85,7 @@ export const createDefaultCharacter = (): Character => {
         },
       },
       craft: {
-        level: -1,
+        level: 0,
         skills: {
           Alchemy: difficultSkill(),
           Crafting: difficultSkill(),
@@ -97,7 +97,7 @@ export const createDefaultCharacter = (): Character => {
         },
       },
       will: {
-        level: -1,
+        level: 0,
         skills: {
           Courage: defaultSkill(),
           HexWeaving: difficultSkill(),
@@ -109,19 +109,20 @@ export const createDefaultCharacter = (): Character => {
         },
       },
       luck: {
-        level: -1,
-        current: -1,
+        level: 0,
+        current: 0,
       },
     },
     profession: {
       name: '',
       abilities: [],
-      skill: {
+      definingSkill: {
         name: '',
-        level: -1,
+        level: 0,
         description: '',
+        statistic: 'Intelligence',
       },
-      vigor: -1,
+      vigor: 0,
     },
     improvementPoints: 0,
     reputation: '',
@@ -139,6 +140,7 @@ export const createDefaultCharacter = (): Character => {
     spells: [],
     hexes: [],
     rituals: [],
+    notes: '',
     modifiers: {},
   }
 }

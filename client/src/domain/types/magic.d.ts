@@ -17,4 +17,5 @@ export type Ritual = {
   difficultyClass: string
   effect: string
   components: string
+  time: string
 }
