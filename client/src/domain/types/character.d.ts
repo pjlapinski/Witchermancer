@@ -30,6 +30,13 @@ export type Profession = {
   abilities: ProfessionAbility[]
 }
 
+export type StatisticWithSkills = {
+  level: number
+  skills: {
+    [key: string]: Skill
+  }
+}
+
 export type Statistics = {
   intelligence: {
     level: number

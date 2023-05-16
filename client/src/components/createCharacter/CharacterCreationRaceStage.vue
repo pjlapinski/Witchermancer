@@ -4,6 +4,9 @@ section.character-creation-stage-content
     v-model='props.character.name',
     :placeholder='$t("characterCreation.step0.raceName")'
   )
+  h2.mt-3 {{ $t('characterCreation.step0.nativeLang') }}
+  select.input-h3(@change='emit("lang-changed", ($event.target as HTMLSelectElement).value as Language)')
+    option(v-for='lang in AllLanguages', :value='lang') {{ $t(`character.skill.${firstLetterLowerCase(lang)}`) }}
   h2.mt-3 {{ $t('characterCreation.step0.perkListHeader') }}
   .btns-large-wrapper
     button.btn-large(@click='emit("add-perk")') +
@@ -21,8 +24,10 @@ section.character-creation-stage-content
 </template>
 <script setup lang="ts">
 import type { Character } from '@/domain/types/character'
+import { AllLanguages, type Language } from '@/domain/types/language'
 import { defineProps, defineEmits } from 'vue'
+import { firstLetterLowerCase } from '@/domain/utility/string'
 
-const props = defineProps<{ character: Character }>()
-const emit = defineEmits(['add-perk', 'remove-perk'])
+const props = defineProps<{ character: Character; nativeLang: Language }>()
+const emit = defineEmits(['add-perk', 'remove-perk', 'lang-changed'])
 </script>

@@ -7,6 +7,8 @@ main#character-creation
   character-creation-race-stage(
     v-if='creationStep === 0',
     :character='character',
+    :native-lang='nativeLang',
+    @lang-changed='handleLangChanged',
     @add-perk='handleAddRacialPerk',
     @remove-perk='handleRemoveRacialPerk'
   )
@@ -28,6 +30,11 @@ main#character-creation
     v-if='creationStep === 3',
     :character='character'
   )
+  character-creation-skills-stage(
+    v-if='creationStep === 4',
+    :character='character',
+    :native-lang='nativeLang'
+  )
 </template>
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
@@ -36,9 +43,19 @@ import CharacterCreationRaceStage from '@/components/createCharacter/CharacterCr
 import CharacterCreationProfessionStage from '@/components/createCharacter/CharacterCreationProfessionStage.vue'
 import CharacterCreationMagicStage from '@/components/createCharacter/CharacterCreationMagicStage.vue'
 import CharacterCreationStatisticsStage from '@/components/createCharacter/CharacterCreationStatisticsStage.vue'
+import CharacterCreationSkillsStage from '@/components/createCharacter/CharacterCreationSkillsStage.vue'
+import type { Language } from '@/domain/types/language'
 
 const character = reactive(createDefaultCharacter())
+const nativeLang = ref<Language>('CommonSpeech')
 const creationStep = ref(0)
+
+const handleLangChanged = (lang: Language) => {
+  character.statistics.intelligence.skills[nativeLang.value].level =
+    character.statistics.intelligence.skills[lang].level
+  nativeLang.value = lang
+  character.statistics.intelligence.skills[nativeLang.value].level = 8
+}
 
 const handleAddRacialPerk = () =>
   character.race.perks.push({ name: '', description: '' })

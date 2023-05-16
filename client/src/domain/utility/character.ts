@@ -27,7 +27,10 @@ export const createDefaultCharacter = (): Character => {
           Business: defaultSkill(),
           Deduction: defaultSkill(),
           Education: defaultSkill(),
-          CommonSpeech: difficultSkill(),
+          CommonSpeech: {
+            difficult: true,
+            level: 8,
+          },
           ElderSpeech: difficultSkill(),
           Dwarven: difficultSkill(),
           MonsterLore: difficultSkill(),
