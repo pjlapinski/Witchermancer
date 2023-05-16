@@ -17,7 +17,7 @@ section.character-creation-stage-content
         :placeholder='$t("characterCreation.step0.perkName")',
         v-model='perk.name'
       )
-      textarea.textarea-h3(
+      resize-textarea.textarea-h3(
         :placeholder='$t("characterCreation.step0.perkDesc")',
         v-model='perk.description'
       )

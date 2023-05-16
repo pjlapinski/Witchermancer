@@ -18,7 +18,7 @@ section.character-creation-stage-content
         v-model='spell.cost',
         :placeholder='$t("character.magic.cost")'
       )
-      textarea.textarea-h3(
+      resize-textarea.textarea-h3(
         v-model='spell.effect',
         :placeholder='$t("character.magic.effect")'
       )
@@ -36,7 +36,7 @@ section.character-creation-stage-content
         v-model='hex.cost',
         :placeholder='$t("character.magic.cost")'
       )
-      textarea.textarea-h3(
+      resize-textarea.textarea-h3(
         v-model='hex.effect',
         :placeholder='$t("character.magic.effect")'
       )
@@ -62,11 +62,11 @@ section.character-creation-stage-content
         v-model='ritual.time',
         :placeholder='$t("character.magic.time")'
       )
-      textarea.textarea-h3(
+      resize-textarea.textarea-h3(
         v-model='ritual.components',
         :placeholder='$t("character.magic.components")'
       )
-      textarea.textarea-h3(
+      resize-textarea.textarea-h3(
         v-model='ritual.effect',
         :placeholder='$t("character.magic.effect")'
       )

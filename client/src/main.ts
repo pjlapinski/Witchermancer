@@ -6,6 +6,7 @@ import { isUserAuthenticated } from '@/domain/api'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { createI18n } from 'vue-i18n'
+import ResizeTextarea from 'resize-textarea-vue3'
 
 const pinia = createPinia()
 
@@ -21,6 +22,7 @@ fetchLocalization().then(locales => {
   app.use(router)
   app.use(pinia)
   app.use(i18n)
+  app.use(ResizeTextarea)
 
   isUserAuthenticated().then(res => {
     const user = useUserStore()
