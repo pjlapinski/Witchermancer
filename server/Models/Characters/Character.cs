@@ -12,7 +12,6 @@ public class Character
     public ObjectId? Id { get; set; }
 
     public string? OwnerEmail { get; set; }
-
     public string Name { get; set; }
     public Race Race { get; set; }
     public string Gender { get; set; }

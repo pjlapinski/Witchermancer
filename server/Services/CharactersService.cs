@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using Witchermancer.Models.Characters;
 using Witchermancer.Models.Config;
@@ -25,6 +26,7 @@ public class CharactersService
 
     public async Task<Character> CreateAsync(Character character)
     {
+        character.Id = ObjectId.GenerateNewId();
         await _charactersCollection.InsertOneAsync(character);
         return character;
     }
