@@ -34,21 +34,42 @@ main#character-creation
     v-if='creationStep === 4',
     :character='character',
     :native-lang='nativeLang'
+    :profession-skills="professionSkills"
+    @toggle-profession-skill="toggleProfessionSkill"
+  )
+  character-creation-life-path-stage(
+    v-if='creationStep === 5',
+    :character='character',
+  )
+  character-creation-summary-stage(
+    v-if='creationStep === 6',
+    :character='character',
+    @finish="finishCharacterCreation"
   )
 </template>
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import { createDefaultCharacter } from '@/domain/utility/character'
+import { createCharacter } from '@/domain/api'
 import CharacterCreationRaceStage from '@/components/createCharacter/CharacterCreationRaceStage.vue'
 import CharacterCreationProfessionStage from '@/components/createCharacter/CharacterCreationProfessionStage.vue'
 import CharacterCreationMagicStage from '@/components/createCharacter/CharacterCreationMagicStage.vue'
 import CharacterCreationStatisticsStage from '@/components/createCharacter/CharacterCreationStatisticsStage.vue'
 import CharacterCreationSkillsStage from '@/components/createCharacter/CharacterCreationSkillsStage.vue'
+import CharacterCreationLifePathStage from '@/components/createCharacter/CharacterCreationLifePathStage.vue'
+import CharacterCreationSummaryStage from '@/components/createCharacter/CharacterCreationSummaryStage.vue'
 import type { Language } from '@/domain/types/language'
+import type { Skill } from '@/domain/types/character'
 
 const character = reactive(createDefaultCharacter())
 const nativeLang = ref<Language>('CommonSpeech')
+const professionSkills = ref<string[]>([])
 const creationStep = ref(0)
+
+const finishCharacterCreation = async () => {
+  const char = await createCharacter(character)
+  console.log(char)
+}
 
 const handleLangChanged = (lang: Language) => {
   character.statistics.intelligence.skills[nativeLang.value].level =
@@ -84,6 +105,18 @@ const handleAddRitual = () => {
   })
 }
 const handleRemoveRitual = () => character.rituals.pop()
+
+const toggleProfessionSkill = (name: string, skill: Skill) => {
+  const idx = professionSkills.value.indexOf(name)
+  if (idx > -1) {
+    professionSkills.value.splice(idx, 1)
+  } else {
+    professionSkills.value.push(name)
+    if (skill.level === 0) {
+      skill.level = 1
+    }
+  }
+}
 </script>
 <style lang="scss">
 .character-creation-stage-content {
