@@ -1,19 +1,25 @@
 <template lang="pug">
 section.character-creation-stage-content
   section.counters
-    h3(:class='{"color-5": professionPointsAvailable < 0}') {{ $t('characterCreation.step4.professionSkillPoints', {'pts': professionPointsAvailable}) }}
-    h3(:class='{"color-5": pickUpPointsAvailable < 0}') {{ $t('characterCreation.step4.pickUpSkillPoints', {'pts': pickUpPointsAvailable}) }}
+    h3(:class='{ "color-5": professionPointsAvailable < 0 }') {{ $t('characterCreation.step4.professionSkillPoints', { pts: professionPointsAvailable }) }}
+    h3(:class='{ "color-5": pickUpPointsAvailable < 0 }') {{ $t('characterCreation.step4.pickUpSkillPoints', { pts: pickUpPointsAvailable }) }}
   template(v-for='(stat, i) in statistics')
     button.section-btn(@click='toggleSection(i)') 
       span {{ $t(`character.statistic.${stat.toLowerCase()}`) }}
       span {{ isSectionOpen(i) ? '&#11206' : '&#11208' }}
-    section.skills-section(:class="{ 'skills-section-hidden': !isSectionOpen(i) }")
+    section.skills-section(
+      :class='{ "skills-section-hidden": !isSectionOpen(i) }'
+    )
       .skill-row(
         v-for='(skill, name) in (character.statistics[stat.toLocaleLowerCase() as keyof Statistics] as StatisticWithSkills).skills'
       )
-        input(type="checkbox", @change="$emit('toggle-profession-skill', name, skill)", :id='`skill-${name}`')
+        input(
+          type='checkbox',
+          @change='$emit("toggle-profession-skill", name, skill)',
+          :id='`skill-${name}`'
+        )
         label.flex-grow-1(:for='`skill-${name}`') {{  $t(`character.skill.${firstLetterLowerCase(name as string)}`) + (skill.difficult ? '*' : '')  }}
-        input.input-h3(type='number', v-model='skill.level')
+        positive-input.input-h3(type='number', v-model='skill.level')
 </template>
 
 <script setup lang="ts">
@@ -27,8 +33,13 @@ import type { Language } from '@/domain/types/language'
 import { AllStatistics } from '@/domain/types/statistic'
 import { firstLetterLowerCase } from '@/domain/utility/string'
 import { defineProps, defineEmits, ref, computed } from 'vue'
+import PositiveInput from '@/components/utility/PositiveInput.vue'
 
-const props = defineProps<{ character: Character; nativeLang: Language, professionSkills: string[] }>()
+const props = defineProps<{
+  character: Character
+  nativeLang: Language
+  professionSkills: string[]
+}>()
 const emit = defineEmits(['toggle-profession-skill'])
 
 const statistics = AllStatistics.filter(s => s !== 'Luck' && s !== 'Speed')
@@ -65,7 +76,7 @@ const professionPointsAvailable = computed(() => {
   return 44 - sum
 })
 const pickUpPointsAvailable = computed(() => {
-  const max = 
+  const max =
     props.character.statistics.intelligence.level +
     props.character.statistics.reflex.level
 
@@ -73,7 +84,7 @@ const pickUpPointsAvailable = computed(() => {
   for (const stat of statistics) {
     const skills = (
       props.character.statistics[
-      stat.toLocaleLowerCase() as keyof typeof props.character.statistics
+        stat.toLocaleLowerCase() as keyof typeof props.character.statistics
       ] as StatisticWithSkills
     ).skills
 
@@ -131,12 +142,12 @@ h3 {
   align-items: center;
   gap: 1rem;
 
-  & input[type=number] {
+  & input[type='number'] {
     width: 2rem;
   }
 }
 
-input[type=checkbox] {
+input[type='checkbox'] {
   -webkit-appearance: none;
   appearance: none;
   margin: 0;

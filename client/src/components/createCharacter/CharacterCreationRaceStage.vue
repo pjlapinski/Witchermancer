@@ -1,7 +1,7 @@
 <template lang="pug">
 section.character-creation-stage-content
   input.input-h3(
-    v-model='props.character.name',
+    v-model='character.name',
     :placeholder='$t("characterCreation.step0.raceName")'
   )
   h2.mt-3 {{ $t('characterCreation.step0.nativeLang') }}

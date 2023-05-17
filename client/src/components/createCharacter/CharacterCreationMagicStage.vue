@@ -56,7 +56,7 @@ section.character-creation-stage-content
       )
       input.input-h3(
         v-model='ritual.difficultyClass',
-        :placeholder='$t("character.difficultyClass")'
+        :placeholder='$t("character.difficultyClass.full")'
       )
       input.input-h3(
         v-model='ritual.time',
