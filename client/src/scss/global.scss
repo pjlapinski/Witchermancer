@@ -4,13 +4,19 @@
   font-family: 'Roboto', sans-serif;
 }
 
+$color-1: #403f4c;
+$color-2: #2c2b3c;
+$color-3: #1b2432;
+$color-4: #121420;
+$color-5: #b76d68;
+
 :root {
   --size-unit: 0.25rem;
-  --color-1: #403f4c;
-  --color-2: #2c2b3c;
-  --color-3: #1b2432;
-  --color-4: #121420;
-  --color-5: #b76d68;
+  --color-1: #{$color-1};
+  --color-2: #{$color-2};
+  --color-3: #{$color-3};
+  --color-4: #{$color-4};
+  --color-5: #{$color-5};
   --color-white: #f3f4f4;
 }
 
@@ -230,4 +236,8 @@ $directions: (
   -webkit-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+.no-decor {
+  text-decoration: none;
 }

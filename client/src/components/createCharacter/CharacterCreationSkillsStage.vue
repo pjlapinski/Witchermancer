@@ -151,6 +151,8 @@ h3 {
 }
 
 input[type='checkbox'] {
+  @extend .bg-2;
+
   -webkit-appearance: none;
   appearance: none;
   margin: 0;
@@ -161,7 +163,6 @@ input[type='checkbox'] {
   height: 1.5rem;
   display: grid;
   place-content: center;
-  background-color: var(--color-2);
 
   &::before {
     content: '';

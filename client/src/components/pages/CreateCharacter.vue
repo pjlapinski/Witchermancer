@@ -2,7 +2,7 @@
 main#character-creation
   #character-creation-stage
     button.stage-btn(:disabled='creationStep === 0', @click='--creationStep') &lsaquo;
-    span.color-5 {{ $t(`characterCreation.step.${creationStep}`) }}
+    span.fg-5 {{ $t(`characterCreation.step.${creationStep}`) }}
     button.stage-btn(:disabled='creationStep === 6', @click='++creationStep') &rsaquo;
   character-creation-race-stage(
     v-if='creationStep === 0',
@@ -138,12 +138,10 @@ const toggleProfessionSkill = (name: string, skill: Skill) => {
   width: 90%;
 }
 
-.color-5 {
-  color: var(--color-5);
-}
-
 .stage-btn {
-  @extend .btn-subtle, .color-5, .px-5;
+  @extend .btn-subtle, .px-5;
+
+  color: var(--color-5);
 
   &:disabled {
     color: var(--color-3);
@@ -152,11 +150,10 @@ const toggleProfessionSkill = (name: string, skill: Skill) => {
 }
 
 #character-creation-stage {
-  @extend .d-flex, .h1, .mb-5;
+  @extend .d-flex, .h1, .mb-5, .bg-2;
 
   justify-content: space-between;
   align-items: center;
-  background-color: var(--color-2);
 }
 
 @media only screen and (min-width: 768px) {
