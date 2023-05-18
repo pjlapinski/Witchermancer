@@ -1,5 +1,6 @@
 ﻿import { Armor, Gear, Weapon } from '@/domain/types/gear'
 import { Hex, Ritual, Spell } from '@/domain/types/magic'
+import { SocialStanding } from '@/domain/types/social'
 
 export type Perk = {
   name: string
@@ -133,8 +134,6 @@ export type Statistics = {
     current: number
   }
 }
-
-export type SocialStanding = 'Equal' | 'Tolerated' | 'Feared' | 'Hated'
 
 export type CraftingRecipe = {
   name: string

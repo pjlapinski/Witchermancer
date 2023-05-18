@@ -15,11 +15,15 @@ section.character-creation-stage-content
       )
         input(
           type='checkbox',
+          :checked="professionSkills.includes(name as string)"
           @change='$emit("toggle-profession-skill", name, skill)',
           :id='`skill-${name}`'
         )
         label.flex-grow-1(:for='`skill-${name}`') {{  $t(`character.skill.${firstLetterLowerCase(name as string)}`) + (skill.difficult ? '*' : '')  }}
         positive-input.input-h3(type='number', v-model='skill.level')
+      .skill-row(v-if='character.profession.definingSkill.statistic === stat')
+        label.flex-grow-1 {{ character.profession.definingSkill.name }}
+        positive-input.input-h3(type='number', v-model='character.profession.definingSkill.level')
 </template>
 
 <script setup lang="ts">
@@ -72,7 +76,7 @@ const professionPointsAvailable = computed(() => {
       sum += skills[skill].level * (+skills[skill].difficult + 1)
     }
   }
-  return 44 - sum
+  return 44 - sum - props.character.profession.definingSkill.level
 })
 const pickUpPointsAvailable = computed(() => {
   const max =
