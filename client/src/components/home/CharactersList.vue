@@ -12,7 +12,7 @@ const props = defineProps<{ characters: Character[] }>()
 </script>
 <style scoped lang="scss">
 #character-list {
-  @extend .d-flex, .flex-col, .w-100;
+  @extend .d-flex, .flex-col, .w-100, .mt-5;
 
   align-self: center;
 }
@@ -27,5 +27,10 @@ const props = defineProps<{ characters: Character[] }>()
   @extend .p-2, .h3, .no-decor;
 
   overflow-wrap: break-word;
+  background-color: #{darken($color-1, 4)};
+
+  &:nth-of-type(2n) {
+    background-color: #{darken($color-1, 2)};
+  }
 }
 </style>
