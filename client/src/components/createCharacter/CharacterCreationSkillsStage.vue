@@ -6,7 +6,7 @@ section.character-creation-stage-content
   template(v-for='(stat, i) in statistics')
     button.section-btn(@click='toggleSection(i)') 
       span {{ $t(`character.statistic.${stat.toLowerCase()}`) }}
-      span {{ isSectionOpen(i) ? '&#11206' : '&#11208' }}
+      span {{ isSectionOpen(i) ? '&#9207' : '&#9205' }}
     section.skills-section(
       :class='{ "skills-section-hidden": !isSectionOpen(i) }'
     )
