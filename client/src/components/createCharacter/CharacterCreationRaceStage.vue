@@ -25,7 +25,6 @@ section.character-creation-stage-content
 <script setup lang="ts">
 import type { Character } from '@/domain/types/character'
 import { AllLanguages, type Language } from '@/domain/types/language'
-import { defineProps, defineEmits } from 'vue'
 import { firstLetterLowerCase } from '@/domain/utility/string'
 
 const props = defineProps<{ character: Character; nativeLang: Language }>()

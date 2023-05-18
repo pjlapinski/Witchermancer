@@ -1,6 +1,7 @@
 ﻿import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import HomePage from '@/components/pages/HomePage.vue'
 import CreateCharacter from '@/components/pages/CreateCharacter.vue'
+import CharacterSheet from '@/components/pages/CharacterSheet.vue'
 
 const routes: RouteRecordRaw[] = [
   {
@@ -12,6 +13,11 @@ const routes: RouteRecordRaw[] = [
     path: '/new',
     name: 'CreateCharacter',
     component: CreateCharacter,
+  },
+  {
+    path: '/char/:id',
+    name: 'CharacterSheet',
+    component: CharacterSheet,
   },
 ]
 

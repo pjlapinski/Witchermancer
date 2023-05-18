@@ -10,7 +10,6 @@ section.character-creation-stage-content
 </template>
 <script setup lang="ts">
 import type { Character, Statistics } from '@/domain/types/character'
-import { defineProps } from 'vue'
 import { AllStatistics } from '@/domain/types/statistic'
 import PositiveInput from '@/components/utility/PositiveInput.vue'
 

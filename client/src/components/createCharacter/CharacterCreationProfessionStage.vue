@@ -5,7 +5,7 @@ section.character-creation-stage-content
     :placeholder='$t("characterCreation.step1.professionName")'
   )
   h2.mt-3 {{ $t('character.vigor') }}
-  positive-input.input-h3(type='number')(v-model='character.profession.vigor')
+  positive-input.input-h3(type='number', v-model='character.profession.vigor')
   h2.mt-3 {{ $t('character.definingSkill') }}
   .fields-collection
     input.input-h3(
@@ -24,7 +24,6 @@ section.character-creation-stage-content
 import type { Character } from '@/domain/types/character'
 import { AllStatistics } from '@/domain/types/statistic'
 import PositiveInput from '@/components/utility/PositiveInput.vue'
-import { defineProps } from 'vue'
 
 const props = defineProps<{ character: Character }>()
 </script>

@@ -33,18 +33,18 @@ main#character-creation
   character-creation-skills-stage(
     v-if='creationStep === 4',
     :character='character',
-    :native-lang='nativeLang'
-    :profession-skills="professionSkills"
-    @toggle-profession-skill="toggleProfessionSkill"
+    :native-lang='nativeLang',
+    :profession-skills='professionSkills',
+    @toggle-profession-skill='toggleProfessionSkill'
   )
   character-creation-life-path-stage(
     v-if='creationStep === 5',
-    :character='character',
+    :character='character'
   )
   character-creation-summary-stage(
     v-if='creationStep === 6',
     :character='character',
-    @finish="finishCharacterCreation"
+    @finish='finishCharacterCreation'
   )
 </template>
 <script setup lang="ts">
@@ -60,15 +60,21 @@ import CharacterCreationLifePathStage from '@/components/createCharacter/Charact
 import CharacterCreationSummaryStage from '@/components/createCharacter/CharacterCreationSummaryStage.vue'
 import type { Language } from '@/domain/types/language'
 import type { Skill } from '@/domain/types/character'
+import { useRouter } from 'vue-router'
 
 const character = reactive(createDefaultCharacter())
 const nativeLang = ref<Language>('CommonSpeech')
 const professionSkills = ref<string[]>([])
 const creationStep = ref(0)
 
+const router = useRouter()
+
 const finishCharacterCreation = async () => {
   const char = await createCharacter(character)
-  console.log(char)
+  router.push({
+    name: 'CharacterSheet',
+    params: { id: char.idString },
+  })
 }
 
 const handleLangChanged = (lang: Language) => {

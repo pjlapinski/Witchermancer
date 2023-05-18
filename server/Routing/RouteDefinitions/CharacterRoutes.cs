@@ -23,12 +23,17 @@ public class CharacterRoutes : IRoutesDefinition
     {
         var character = await service.GetByIdAsync(id);
         if (character is null) return Results.NotFound();
+        character.Id = null;
         return character.OwnerEmail == ctx.User.GetEmail() ? Results.Ok(character) : Results.Unauthorized();
     }
 
     [Authorize]
-    private static async Task<IResult> GetUserCharacters(HttpContext ctx, CharactersService service) =>
-        Results.Ok(await service.GetByEmailAsync(ctx.User.GetEmail()));
+    private static async Task<IResult> GetUserCharacters(HttpContext ctx, CharactersService service)
+    {
+        var characters = await service.GetByEmailAsync(ctx.User.GetEmail());
+        characters.ForEach(ch => ch.Id = null);
+        return Results.Ok(characters);
+    }
 
     [Authorize]
     private static async Task<IResult> CreateCharacter(
@@ -38,7 +43,9 @@ public class CharacterRoutes : IRoutesDefinition
     )
     {
         character.OwnerEmail = ctx.User.GetEmail();
-        return Results.Ok(await service.CreateAsync(character));
+        var ch = await service.CreateAsync(character);
+        ch.Id = null;
+        return Results.Ok(ch);
     }
 
     [Authorize]
@@ -52,7 +59,8 @@ public class CharacterRoutes : IRoutesDefinition
         var existingChar = await service.GetByIdAsync(id);
         if (existingChar is null) return Results.NotFound();
         if (existingChar.OwnerEmail != ctx.User.GetEmail()) return Results.Unauthorized();
-        character.Id = ObjectId.Parse(id);
+        character.Id = existingChar.Id;
+        character.IdString = id;
         await service.UpdateAsync(character);
         return Results.Ok();
     }

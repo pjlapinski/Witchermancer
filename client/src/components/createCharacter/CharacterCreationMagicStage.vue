@@ -74,7 +74,6 @@ section.character-creation-stage-content
 
 <script setup lang="ts">
 import type { Character } from '@/domain/types/character'
-import { defineProps, defineEmits, ref } from 'vue'
 
 const props = defineProps<{ character: Character }>()
 const emit = defineEmits([

@@ -19,7 +19,7 @@ public class CharactersService
     }
 
     public async Task<Character?> GetByIdAsync(string id) =>
-        await _charactersCollection.Find(c => c.Id.ToString() == id).FirstOrDefaultAsync();
+        await _charactersCollection.Find(c => c.IdString == id).FirstOrDefaultAsync();
 
     public async Task<List<Character>> GetByEmailAsync(string email) =>
         await _charactersCollection.Find(c => c.OwnerEmail == email).ToListAsync();
@@ -27,6 +27,7 @@ public class CharactersService
     public async Task<Character> CreateAsync(Character character)
     {
         character.Id = ObjectId.GenerateNewId();
+        character.IdString = character.Id.ToString();
         await _charactersCollection.InsertOneAsync(character);
         return character;
     }
@@ -35,5 +36,5 @@ public class CharactersService
         await _charactersCollection.ReplaceOneAsync(c => c.Id == character.Id, character);
 
     public async Task DeleteAsync(string id) =>
-        await _charactersCollection.DeleteOneAsync(c => c.Id.ToString() == id);
+        await _charactersCollection.DeleteOneAsync(c => c.IdString == id);
 }

@@ -25,14 +25,13 @@ section.character-creation-stage-content
 <script setup lang="ts">
 import type {
   Character,
-  Skill,
   Statistics,
   StatisticWithSkills,
 } from '@/domain/types/character'
 import type { Language } from '@/domain/types/language'
 import { AllStatistics } from '@/domain/types/statistic'
 import { firstLetterLowerCase } from '@/domain/utility/string'
-import { defineProps, defineEmits, ref, computed } from 'vue'
+import { ref, computed } from 'vue'
 import PositiveInput from '@/components/utility/PositiveInput.vue'
 
 const props = defineProps<{

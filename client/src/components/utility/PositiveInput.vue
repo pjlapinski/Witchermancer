@@ -2,7 +2,7 @@
 input(type='number', :value='modelValue', @input='handleInput', ref='input')
 </template>
 <script setup lang="ts">
-import { defineProps, defineEmits, ref } from 'vue'
+import { ref } from 'vue'
 
 const input = ref<HTMLInputElement | null>(null)
 const props = defineProps<{ modelValue: number }>()

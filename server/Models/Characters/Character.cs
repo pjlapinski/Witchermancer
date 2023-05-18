@@ -11,6 +11,7 @@ public class Character
     [BsonId, BsonRepresentation(BsonType.ObjectId)]
     public ObjectId? Id { get; set; }
 
+    public string? IdString { get; set; }
     public string? OwnerEmail { get; set; }
     public string Name { get; set; }
     public Race Race { get; set; }
