@@ -13,12 +13,10 @@ main#home-page-content(v-else)
 <script setup lang="ts">
 import CharactersList from '@/components/home/CharactersList.vue'
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
 import { getUserCharacters } from '@/domain/api'
 import { useUserStore } from '@/domain/store/user'
 import type { Character } from '@/domain/types/character.d.ts'
 
-const router = useRouter()
 const user = useUserStore()
 
 let characters = ref<Character[]>([])
