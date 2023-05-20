@@ -11,6 +11,20 @@ section#skills-section.character-sheet-section
     )
       h3 {{  $t(`character.skill.${firstLetterLowerCase(name as string)}`)  }}
       h3 {{  getSkill(character, stat.toLowerCase(), name as string)  }}
+    .item-row(
+      v-if='character.profession.definingSkill.statistic === stat',
+      @click='emit("open-defining")'
+    ) 
+      |
+      h3 {{ character.profession.definingSkill.name }}
+      h3 {{ character.profession.definingSkill.level }}
+    template(v-for='(profSkill, i) in character.profession.abilities')
+      .item-row(
+        v-if='profSkill.statistic === stat',
+        @click='emit("open-prof", `profSkill${i}`)'
+      ) 
+      h3 {{ profSkill.name }}
+      h3 {{ profSkill.level }}
 </template>
 <script setup lang="ts">
 import type {
@@ -23,19 +37,14 @@ import { firstLetterLowerCase } from '@/domain/utility/string'
 import { getStatistic, getSkill } from '@/domain/utility/character'
 
 const props = defineProps<{ character: Character }>()
-const emit = defineEmits(['open-stat', 'open-skill'])
+const emit = defineEmits([
+  'open-stat',
+  'open-skill',
+  'open-defining',
+  'open-prof',
+])
 </script>
 <style scoped lang="scss">
-#skills-section {
-  @extend .d-flex, .flex-col;
-}
-
-.item-row {
-  @extend .d-flex, .px-5;
-
-  justify-content: space-between;
-}
-
 h3,
 h2 {
   font-weight: normal;
