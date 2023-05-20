@@ -1,5 +1,11 @@
-﻿import { Character, Skill } from '@/domain/types/character'
+﻿import {
+  Character,
+  Skill,
+  StatisticWithSkills,
+  Statistics,
+} from '@/domain/types/character'
 import { DieRoll } from '@/domain/types/common'
+import { Statistic } from '@/domain/types/statistic'
 
 export const createDefaultCharacter = (): Character => {
   const defaultSkill = (): Skill => ({
@@ -195,3 +201,13 @@ export const getVigor = (character: Character) => {
 }
 export const getModifier = (character: Character, modifier: string) =>
   character.modifiers[modifier] ?? 0
+export const getStatistic = (character: Character, statistic: string) =>
+  character.statistics[statistic as keyof Statistics].level +
+  getModifier(character, statistic)
+export const getSkill = (
+  character: Character,
+  statistic: string,
+  skill: string,
+) =>
+  (character.statistics[statistic as keyof Statistics] as StatisticWithSkills)
+    .skills[skill].level + getModifier(character, skill)
