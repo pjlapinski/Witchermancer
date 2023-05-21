@@ -6,49 +6,48 @@ main#character-sheet(v-if='!loading')
   character-sheet-personal-section(
     :class='{ "section-hidden": openSection !== 0 }',
     :character='character',
-    @open-name='handleOpenName',
-    @open-ip='handleOpenIP',
-    @open-age='handleOpenAge',
-    @open-gender='handleOpenGender',
-    @open-reputation='handleOpenReputation',
-    @open-social='handleOpenSocial',
+    :open-sidebar-fn='openSidebar',
     @save='saveCharacter'
   )
   character-sheet-derived-section(
     :class='{ "section-hidden": openSection !== 1 }',
-    :character='character'
+    :character='character',
+    :open-sidebar-fn='openSidebar'
   )
   character-sheet-race-section(
     :class='{ "section-hidden": openSection !== 2 }',
-    :character='character'
+    :character='character',
+    :open-sidebar-fn='openSidebar',
+    @add-perk='handleAddRacialPerk'
   )
   character-sheet-profession-section(
     :class='{ "section-hidden": openSection !== 3 }',
-    :character='character'
+    :character='character',
+    :open-sidebar-fn='openSidebar',
+    @add-ability='handleAddProfessionAbility'
   )
   character-sheet-skills-section(
     :class='{ "section-hidden": openSection !== 4 }',
     :character='character',
-    @open-skill='handleOpenSkill',
-    @open-stat='handleOpenStat',
-    @open-defining='handleOpenDefiningSkill',
-    @open-prof='handleOpenProfessionSkill'
+    :open-sidebar-fn='openSidebar'
   )
   character-sheet-magic-section(
     :class='{ "section-hidden": openSection !== 5 }',
-    :character='character'
+    :character='character',
+    :open-sidebar-fn='openSidebar'
   )
   character-sheet-gear-section(
     :class='{ "section-hidden": openSection !== 6 }',
-    :character='character'
+    :character='character',
+    :open-sidebar-fn='openSidebar'
   )
   character-sheet-notes-section(
     :class='{ "section-hidden": openSection !== 7 }',
-    :character='character'
+    :character='character',
+    @save='saveCharacter'
   )
   character-sheet-delete-section(
-    :class='{ "section-hidden": openSection !== 8 }',
-    :character='character'
+    :class='{ "section-hidden": openSection !== 8 }'
   )
 character-sheet-sidebar(
   :character='character',
@@ -74,7 +73,9 @@ import type { OpenedItem } from '@/domain/types/components/characterSheetSidebar
 import { createDefaultCharacter } from '@/domain/utility/character'
 import { useRoute } from 'vue-router'
 import { reactive, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const route = useRoute()
 
 const loading = ref(true)
@@ -84,21 +85,30 @@ const sidebarOpen = ref(false)
 const sidebarItem = reactive<OpenedItem>({
   name: '',
   description: '',
+  deletable: false,
   fields: {},
 })
 
 const openSection = ref(0)
 
-const handleOpenName = () => {}
-const handleOpenIP = () => {}
-const handleOpenAge = () => {}
-const handleOpenGender = () => {}
-const handleOpenReputation = () => {}
-const handleOpenSocial = () => {}
-const handleOpenStat = (stat: string) => {}
-const handleOpenSkill = (stat: string, skill: string) => {}
-const handleOpenDefiningSkill = () => {}
-const handleOpenProfessionSkill = (idx: number) => {}
+const openSidebar = (item: OpenedItem) => {}
+
+const handleAddRacialPerk = () => {
+  character.race.perks.push({
+    name: t('character.placeholders.racialPerk'),
+    description: '',
+  })
+  saveCharacter()
+}
+const handleAddProfessionAbility = () => {
+  character.profession.abilities.push({
+    name: t('character.placeholders.professionAbility'),
+    description: '',
+    level: 0,
+    statistic: 'Intelligence',
+  })
+  saveCharacter()
+}
 
 const fetchCharacter = async () => {
   Object.assign(character, await getCharacter(route.params.id as string))
@@ -146,6 +156,8 @@ fetchCharacter()
   .character-sheet-section {
     flex: 0 0 50%;
     width: 50%;
+    border: 1px solid var(--color-2);
+    padding: #{sizeof(5)};
   }
 }
 
@@ -156,8 +168,32 @@ fetchCharacter()
   align-items: center;
 
   & * {
-    max-width: 50%;
+    flex-grow: 1;
     overflow-wrap: break-word;
   }
+
+  // one child
+  & :nth-child(1):nth-last-child(1) {
+    width: 100%;
+  }
+
+  // two children
+  & :nth-child(1):nth-last-child(2),
+  & :nth-child(2):nth-last-child(1) {
+    width: 50%;
+  }
+
+  & :nth-child(2):nth-last-child(1) {
+    text-align: right;
+  }
+}
+
+.plus-btn {
+  @extend .btn, .mx-5, .text-center, .h3;
+}
+
+h3,
+h2 {
+  font-weight: normal;
 }
 </style>

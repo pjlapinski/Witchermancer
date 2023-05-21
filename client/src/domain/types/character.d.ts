@@ -1,6 +1,7 @@
 ﻿import { Armor, Gear, Weapon } from '@/domain/types/gear'
 import { Hex, Ritual, Spell } from '@/domain/types/magic'
 import { SocialStanding } from '@/domain/types/social'
+import { Statistic } from '@/domain/types/statistic'
 
 export type Perk = {
   name: string
@@ -171,7 +172,6 @@ export type Character = {
   currentHealthPoints: number
   currentStamina: number
   currentStun: number
-  currentVigor: number
   spells: Spell[]
   hexes: Hex[]
   rituals: Ritual[]

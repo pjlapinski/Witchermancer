@@ -31,7 +31,6 @@ public class Character
     public int CurrentHealthPoints { get; set; }
     public int CurrentStamina { get; set; }
     public int CurrentStun { get; set; }
-    public int CurrentVigor { get; set; }
     public Spell[] Spells { get; set; }
     public Hex[] Hexes { get; set; }
     public Ritual[] Rituals { get; set; }

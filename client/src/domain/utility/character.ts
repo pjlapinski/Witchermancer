@@ -5,7 +5,6 @@
   Statistics,
 } from '@/domain/types/character'
 import { DieRoll } from '@/domain/types/common'
-import { Statistic } from '@/domain/types/statistic'
 
 export const createDefaultCharacter = (): Character => {
   const defaultSkill = (): Skill => ({
@@ -145,7 +144,6 @@ export const createDefaultCharacter = (): Character => {
     currentHealthPoints: 0,
     currentStamina: 0,
     currentStun: 0,
-    currentVigor: 0,
     spells: [],
     hexes: [],
     rituals: [],
@@ -163,16 +161,23 @@ export const getPhysicalTableScore = (character: Character) =>
       2,
   )
 export const getStunScore = (character: Character) =>
-  getPhysicalTableScore(character) * 10
+  getPhysicalTableScore(character) * 10 + getModifier(character, 'stun')
 export const getHealthPoints = (character: Character) =>
-  getPhysicalTableScore(character) * 5
-export const getStaminaScore = getHealthPoints
-export const getRecoveryScore = getPhysicalTableScore
+  getPhysicalTableScore(character) * 5 + getModifier(character, 'health')
+export const getStaminaScore = (character: Character) =>
+  getPhysicalTableScore(character) * 5 + getModifier(character, 'stamina')
+export const getRecoveryScore = (character: Character) =>
+  getPhysicalTableScore(character) + getModifier(character, 'recovery')
+export const getWoundThreshold = (character: Character) =>
+  getPhysicalTableScore(character) + getModifier(character, 'woundThreshold')
 export const getRunScore = (character: Character) =>
-  (character.statistics.speed.level + getModifier(character, 'speed')) * 3
-export const getLeapScore = (character: Character) => getRunScore(character) / 5
+  (character.statistics.speed.level + getModifier(character, 'speed')) * 3 +
+  getModifier(character, 'run')
+export const getLeapScore = (character: Character) =>
+  getRunScore(character) / 5 + getModifier(character, 'leap')
 export const getEncumbranceScore = (character: Character) =>
-  (character.statistics.body.level + getModifier(character, 'body')) * 10
+  (character.statistics.body.level + getModifier(character, 'body')) * 10 +
+  getModifier(character, 'encumbrance')
 export const getEncumbrancePenalty = (character: Character) => {
   const overLimit = getCarriedWeight(character) - getEncumbranceScore(character)
   return overLimit <= 0 ? 0 : Math.max(1, Math.floor(overLimit / 5))

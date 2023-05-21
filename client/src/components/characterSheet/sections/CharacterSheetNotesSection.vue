@@ -1,8 +1,15 @@
 <template lang="pug">
 section#notes-section.character-sheet-section
+  .px-5.mt-3.d-flex.flex-col
+    resize-textarea.textarea-h3(
+      v-model='character.notes',
+      @blur.native='$emit("save")',
+      :placeholder='$t("character.notes")'
+    )
 </template>
 <script setup lang="ts">
 import type { Character } from '@/domain/types/character'
 
 const props = defineProps<{ character: Character }>()
+const emit = defineEmits(['save'])
 </script>
