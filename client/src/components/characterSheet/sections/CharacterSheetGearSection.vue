@@ -8,8 +8,10 @@ section#gear-section.character-sheet-section
   .item-row(v-for='weapon in character.weapons')
     h3 {{ weapon.name }}
   h2.mx-5.py-3 {{ $t('character.armor') }}
-  .item-row
-    | TODO
+  .item-row(@click='', v-for='section in AllArmorSections')
+    h3 {{ $t(`character.armorSection.${section}`) }}
+    h3(v-if='character.armor[section] === null') {{ getStoppingPower(character, section) }} {{ $t('character.stoppingPower.abbr') }}
+    h3(v-else) {{ character.armor[section]?.name ?? '' }} ({{ getStoppingPower(character, section) }} {{ $t('character.stoppingPower.abbr') }})
   h2.mx-5.py-3 {{ $t('character.gear') }}
   plus-btn(@click='$emit("add-gear")')
   .item-row(v-for='gear in character.gear')
@@ -21,7 +23,9 @@ import type { OpenSidebarFn } from '@/domain/types/components/characterSheetSide
 import {
   getCarriedWeight,
   getEncumbranceScore,
+  getStoppingPower,
 } from '@/domain/utility/character'
+import { AllArmorSections } from '@/domain/types/armor'
 import PlusBtn from '@/components/characterSheet/PlusBtn.vue'
 
 const props = defineProps<{

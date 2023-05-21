@@ -4,6 +4,7 @@
   StatisticWithSkills,
   Statistics,
 } from '@/domain/types/character'
+import { ArmorSection } from '@/domain/types/armor'
 import { DieRoll } from '@/domain/types/common'
 
 export const createDefaultCharacter = (): Character => {
@@ -208,6 +209,9 @@ export const getWeaponDamage = (character: Character, idx: number): DieRoll => {
     modifier: weapon.damage.modifier + getBonusMeleeDamage(character),
   }
 }
+export const getStoppingPower = (character: Character, section: ArmorSection) =>
+  (character.armor[section]?.stoppingPower ?? 0) +
+  getModifier(character, 'armor')
 export const getVigor = (character: Character) => {
   const base = character.profession.vigor
   return base === 0 ? 0 : base + getModifier(character, 'vigor')
