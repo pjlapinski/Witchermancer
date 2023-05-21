@@ -139,7 +139,6 @@ export const createDefaultCharacter = (): Character => {
     gear: [],
     money: 0,
     weapons: [],
-    primaryWeaponIdx: -1,
     armor: {},
     currentHealthPoints: 0,
     currentStamina: 0,
@@ -189,7 +188,8 @@ export const getBonusMeleeDamage = (character: Character) =>
     (character.statistics.body.level + getModifier(character, 'body')) / 2,
   ) *
     2 -
-  6
+  6 +
+  getModifier(character, 'damage')
 export const getPunchDamage = (character: Character): DieRoll => ({
   diceAmount: 1,
   diceType: 6,
@@ -200,6 +200,14 @@ export const getKickDamage = (character: Character): DieRoll => ({
   diceType: 6,
   modifier: getBonusMeleeDamage(character) + 4,
 })
+export const getWeaponDamage = (character: Character, idx: number): DieRoll => {
+  const weapon = character.weapons[idx]
+  return {
+    diceAmount: weapon.damage.diceAmount,
+    diceType: weapon.damage.diceType,
+    modifier: weapon.damage.modifier + getBonusMeleeDamage(character),
+  }
+}
 export const getVigor = (character: Character) => {
   const base = character.profession.vigor
   return base === 0 ? 0 : base + getModifier(character, 'vigor')

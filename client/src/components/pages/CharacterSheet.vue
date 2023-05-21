@@ -34,12 +34,17 @@ main#character-sheet(v-if='!loading')
   character-sheet-magic-section(
     :class='{ "section-hidden": openSection !== 5 }',
     :character='character',
-    :open-sidebar-fn='openSidebar'
+    :open-sidebar-fn='openSidebar',
+    @add-hex='handleAddHex',
+    @add-ritual='handleAddRitual',
+    @add-spell='handleAddSpell'
   )
   character-sheet-gear-section(
     :class='{ "section-hidden": openSection !== 6 }',
     :character='character',
-    :open-sidebar-fn='openSidebar'
+    :open-sidebar-fn='openSidebar',
+    @add-gear='handleAddGear',
+    @add-weapon='handleAddWeapon'
   )
   character-sheet-notes-section(
     :class='{ "section-hidden": openSection !== 7 }',
@@ -47,7 +52,8 @@ main#character-sheet(v-if='!loading')
     @save='saveCharacter'
   )
   character-sheet-delete-section(
-    :class='{ "section-hidden": openSection !== 8 }'
+    :class='{ "section-hidden": openSection !== 8 }',
+    @confirm-delete='confirmDeleteCharacter'
   )
 character-sheet-sidebar(
   :character='character',
@@ -57,7 +63,7 @@ character-sheet-sidebar(
 </template>
 
 <script setup lang="ts">
-import { getCharacter, updateCharacter } from '@/domain/api'
+import { getCharacter, updateCharacter, deleteCharacter } from '@/domain/api'
 import CharacterSheetDeleteSection from '@/components/characterSheet/sections/CharacterSheetDeleteSection.vue'
 import CharacterSheetDerivedSection from '@/components/characterSheet/sections/CharacterSheetDerivedSection.vue'
 import CharacterSheetGearSection from '@/components/characterSheet/sections/CharacterSheetGearSection.vue'
@@ -71,12 +77,13 @@ import CharacterSheetSidebar from '../characterSheet/CharacterSheetSidebar.vue'
 import type { Character } from '@/domain/types/character'
 import type { OpenedItem } from '@/domain/types/components/characterSheetSidebar'
 import { createDefaultCharacter } from '@/domain/utility/character'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 const route = useRoute()
+const router = useRouter()
 
 const loading = ref(true)
 const character = reactive<Character>(createDefaultCharacter())
@@ -109,6 +116,65 @@ const handleAddProfessionAbility = () => {
   })
   saveCharacter()
 }
+const handleAddSpell = () => {
+  character.spells.push({
+    name: t('character.placeholders.spell'),
+    cost: '',
+    effect: '',
+    range: '',
+  })
+  saveCharacter()
+}
+const handleAddHex = () => {
+  character.hexes.push({
+    name: t('character.placeholders.hex'),
+    cost: '',
+    effect: '',
+  })
+  saveCharacter()
+}
+const handleAddRitual = () => {
+  character.rituals.push({
+    name: t('character.placeholders.ritual'),
+    components: '',
+    cost: '',
+    difficultyClass: '0',
+    effect: '',
+    time: '',
+  })
+  saveCharacter()
+}
+const handleAddGear = () => {
+  character.gear.push({
+    name: t('character.placeholders.gear'),
+    notes: '',
+    weight: 0,
+  })
+  saveCharacter()
+}
+const handleAddWeapon = () => {
+  character.weapons.push({
+    name: t('character.placeholders.weapon'),
+    accuracy: 0,
+    concealment: 'Small',
+    damage: {
+      diceAmount: 1,
+      diceType: 6,
+      modifier: 0,
+    },
+    effect: '',
+    enhancements: {
+      available: 0,
+      inserted: [],
+    },
+    handsRequired: 1,
+    range: '',
+    reliability: 1,
+    type: [],
+    weight: 0,
+  })
+  saveCharacter()
+}
 
 const fetchCharacter = async () => {
   Object.assign(character, await getCharacter(route.params.id as string))
@@ -116,6 +182,10 @@ const fetchCharacter = async () => {
 }
 const saveCharacter = () => {
   updateCharacter(route.params.id as string, character)
+}
+const confirmDeleteCharacter = async () => {
+  await deleteCharacter(route.params.id as string)
+  router.push({ name: 'Home' })
 }
 
 fetchCharacter()
@@ -162,7 +232,7 @@ fetchCharacter()
 }
 
 .item-row {
-  @extend .d-flex, .px-5, .cursor-ptr;
+  @extend .d-flex, .px-5, .py-1, .cursor-ptr;
 
   justify-content: space-between;
   align-items: center;
@@ -186,10 +256,6 @@ fetchCharacter()
   & :nth-child(2):nth-last-child(1) {
     text-align: right;
   }
-}
-
-.plus-btn {
-  @extend .btn, .mx-5, .text-center, .h3;
 }
 
 h3,

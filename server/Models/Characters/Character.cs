@@ -26,7 +26,6 @@ public class Character
     public Gear[] Gear { get; set; }
     public int Money { get; set; }
     public Weapon[] Weapons { get; set; }
-    public int PrimaryWeaponIdx { get; set; }
     public EquippedArmor Armor { get; set; }
     public int CurrentHealthPoints { get; set; }
     public int CurrentStamina { get; set; }

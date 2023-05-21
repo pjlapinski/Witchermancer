@@ -1,5 +1,4 @@
 <template lang="pug">
-//- reputation, social standing
 section#life-section.character-sheet-section
   .item-row.my-3(@click='')
     h2.fg-5 {{ character.name }}

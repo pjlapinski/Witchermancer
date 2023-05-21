@@ -2,7 +2,7 @@
 
 public record Weapon(
     string Name,
-    string Type,
+    string[] Type,
     int Accuracy,
     DieRoll Damage,
     int Reliability,

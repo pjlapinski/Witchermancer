@@ -162,7 +162,6 @@ export type Character = {
   gear: Gear[]
   money: number
   weapons: Weapon[]
-  primaryWeaponIdx: number
   armor: {
     head?: Armor
     torso?: Armor
