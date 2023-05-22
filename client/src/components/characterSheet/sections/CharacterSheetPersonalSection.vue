@@ -40,10 +40,9 @@ const props = defineProps<{
 }>()
 const emit = defineEmits(['save'])
 
-const openNameSidebar = () => {
-  const name = t('character.name')
+const openNameSidebar = () =>
   props.openSidebarFn({
-    name,
+    name: t('character.name'),
     deletable: false,
     fields: [
       {
@@ -55,12 +54,10 @@ const openNameSidebar = () => {
       return { ...props.character, name: fields[0].value as string }
     },
   })
-}
 
-const openAgeSidebar = () => {
-  const name = t('character.age')
+const openAgeSidebar = () =>
   props.openSidebarFn({
-    name,
+    name: t('character.age'),
     deletable: false,
     fields: [
       {
@@ -72,12 +69,10 @@ const openAgeSidebar = () => {
       return { ...props.character, age: fields[0].value as number }
     },
   })
-}
 
-const openGenderSidebar = () => {
-  const name = t('character.gender')
+const openGenderSidebar = () =>
   props.openSidebarFn({
-    name,
+    name: t('character.gender'),
     deletable: false,
     fields: [
       {
@@ -89,12 +84,10 @@ const openGenderSidebar = () => {
       return { ...props.character, gender: fields[0].value as string }
     },
   })
-}
 
-const openReputationSidebar = () => {
-  const name = t('character.reputation')
+const openReputationSidebar = () =>
   props.openSidebarFn({
-    name,
+    name: t('character.reputation'),
     deletable: false,
     fields: [
       {
@@ -106,12 +99,10 @@ const openReputationSidebar = () => {
       return { ...props.character, reputation: fields[0].value as string }
     },
   })
-}
 
-const openSocialStandingSidebar = () => {
-  const name = t('character.socialStanding.name')
+const openSocialStandingSidebar = () =>
   props.openSidebarFn({
-    name,
+    name: t('character.socialStanding.name'),
     deletable: false,
     fields: [
       {
@@ -130,12 +121,10 @@ const openSocialStandingSidebar = () => {
       }
     },
   })
-}
 
-const openImprovementPointsSidebar = () => {
-  const name = t('character.improvementPoints')
+const openImprovementPointsSidebar = () =>
   props.openSidebarFn({
-    name,
+    name: t('character.improvementPoints'),
     deletable: false,
     fields: [
       {
@@ -150,5 +139,4 @@ const openImprovementPointsSidebar = () => {
       }
     },
   })
-}
 </script>
