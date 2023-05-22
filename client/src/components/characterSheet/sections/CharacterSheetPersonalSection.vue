@@ -1,21 +1,21 @@
 <template lang="pug">
 section#life-section.character-sheet-section
-  .item-row.my-3(@click='')
+  .item-row.my-3(@click='openNameSidebar')
     h2.fg-5 {{ character.name }}
   .split-line.mb-3
-  .item-row(@click='')
+  .item-row(@click='openAgeSidebar')
     h3 {{ $t('character.age') }}
     h3 {{ character.age }}
-  .item-row(@click='')
+  .item-row(@click='openGenderSidebar')
     h3 {{ $t('character.gender') }}
     h3 {{ character.gender }}
-  .item-row(@click='')
+  .item-row(@click='openReputationSidebar')
     h3 {{ $t('character.reputation') }}
     h3 {{ character.reputation }}
-  .item-row(@click='')
+  .item-row(@click='openSocialStandingSidebar')
     h3 {{ $t('character.socialStanding.name') }}
     h3 {{ $t(`character.socialStanding.${character.socialStanding.toLowerCase()}`) }}
-  .item-row(@click='')
+  .item-row(@click='openImprovementPointsSidebar')
     h3 {{ $t('character.improvementPoints') }}
     h3 {{ character.improvementPoints }}
   h2.px-5.my-3 {{ $t('character.lifePath') }}
@@ -29,10 +29,132 @@ section#life-section.character-sheet-section
 <script setup lang="ts">
 import type { Character } from '@/domain/types/character'
 import type { OpenSidebarFn } from '@/domain/types/components/characterSheetSidebar'
+import { AllSocialStandings, type SocialStanding } from '@/domain/types/social'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const props = defineProps<{
   character: Character
   openSidebarFn: OpenSidebarFn
 }>()
 const emit = defineEmits(['save'])
+
+const openNameSidebar = () => {
+  const name = t('character.name')
+  props.openSidebarFn({
+    name,
+    deletable: false,
+    fields: [
+      {
+        displayName: name,
+        value: props.character.name,
+        input: 'Text',
+      },
+    ],
+    editCallback(fields) {
+      return { ...props.character, name: fields[0].value as string }
+    },
+  })
+}
+
+const openAgeSidebar = () => {
+  const name = t('character.age')
+  props.openSidebarFn({
+    name,
+    deletable: false,
+    fields: [
+      {
+        displayName: name,
+        value: props.character.age,
+        input: 'PositiveNumber',
+      },
+    ],
+    editCallback(fields) {
+      return { ...props.character, age: fields[0].value as number }
+    },
+  })
+}
+
+const openGenderSidebar = () => {
+  const name = t('character.gender')
+  props.openSidebarFn({
+    name,
+    deletable: false,
+    fields: [
+      {
+        displayName: name,
+        value: props.character.gender,
+        input: 'Text',
+      },
+    ],
+    editCallback(fields) {
+      return { ...props.character, gender: fields[0].value as string }
+    },
+  })
+}
+
+const openReputationSidebar = () => {
+  const name = t('character.reputation')
+  props.openSidebarFn({
+    name,
+    deletable: false,
+    fields: [
+      {
+        displayName: name,
+        value: props.character.reputation,
+        input: 'Text',
+      },
+    ],
+    editCallback(fields) {
+      return { ...props.character, reputation: fields[0].value as string }
+    },
+  })
+}
+
+const openSocialStandingSidebar = () => {
+  const name = t('character.socialStanding.name')
+  props.openSidebarFn({
+    name,
+    deletable: false,
+    fields: [
+      {
+        displayName: name,
+        value: props.character.socialStanding,
+        input: 'Select',
+        selectOptions: AllSocialStandings.map(ss => ({
+          text: t(`character.socialStanding.${ss.toLowerCase()}`),
+          value: ss,
+        })),
+      },
+    ],
+    editCallback(fields) {
+      return {
+        ...props.character,
+        socialStanding: fields[0].value as SocialStanding,
+      }
+    },
+  })
+}
+
+const openImprovementPointsSidebar = () => {
+  const name = t('character.improvementPoints')
+  props.openSidebarFn({
+    name,
+    deletable: false,
+    fields: [
+      {
+        displayName: name,
+        value: props.character.improvementPoints,
+        input: 'PositiveNumber',
+      },
+    ],
+    editCallback(fields) {
+      return {
+        ...props.character,
+        improvementPoints: fields[0].value as number,
+      }
+    },
+  })
+}
 </script>

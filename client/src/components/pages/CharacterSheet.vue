@@ -56,9 +56,11 @@ main#character-sheet(v-if='!loading')
     @confirm-delete='confirmDeleteCharacter'
   )
 character-sheet-sidebar(
-  :character='character',
   :open='sidebarOpen',
-  :item='sidebarItem'
+  :item='sidebarItem',
+  @close='sidebarOpen = false',
+  @edited='handleSidebarEdit',
+  @deleted='handleSidebarDelete'
 )
 </template>
 
@@ -75,66 +77,97 @@ import CharacterSheetRaceSection from '@/components/characterSheet/sections/Char
 import CharacterSheetSkillsSection from '@/components/characterSheet/sections/CharacterSheetSkillsSection.vue'
 import CharacterSheetSidebar from '../characterSheet/CharacterSheetSidebar.vue'
 import type { Character } from '@/domain/types/character'
-import type { OpenedItem } from '@/domain/types/components/characterSheetSidebar'
+import type {
+  OpenedItem,
+  SidebarFields,
+} from '@/domain/types/components/characterSheetSidebar'
 import { createDefaultCharacter } from '@/domain/utility/character'
 import { useRoute, useRouter } from 'vue-router'
-import { reactive, ref } from 'vue'
+import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 
+const reloads = ref(0) // increment to force a reload
 const loading = ref(true)
-const character = reactive<Character>(createDefaultCharacter())
+const character = ref<Character>(createDefaultCharacter())
 
 const sidebarOpen = ref(false)
-const sidebarItem = reactive<OpenedItem>({
+const sidebarItem = ref<OpenedItem>({
   name: '',
   description: '',
   deletable: false,
-  fields: {},
+  fields: [],
 })
 
 const openSection = ref(0)
 
-const openSidebar = (item: OpenedItem) => {}
+const openSidebar = (item: OpenedItem) => {
+  sidebarItem.value = item
+  sidebarOpen.value = true
+}
+const handleSidebarEdit = (fields: SidebarFields) => {
+  if (sidebarItem.value.editCallback) {
+    character.value = sidebarItem.value.editCallback(fields)
+    ++reloads.value
+  }
+  saveCharacter()
+}
+const handleSidebarDelete = () => {
+  if (sidebarItem.value.deleteCallback) {
+    character.value = sidebarItem.value.deleteCallback()
+    ++reloads.value
+  }
+  saveCharacter()
+  sidebarOpen.value = false
+}
 
 const handleAddRacialPerk = () => {
-  character.race.perks.push({
+  const newChar = character.value
+  newChar.race.perks.push({
     name: t('character.placeholders.racialPerk'),
     description: '',
   })
+  character.value = newChar
   saveCharacter()
 }
 const handleAddProfessionAbility = () => {
-  character.profession.abilities.push({
+  const newChar = character.value
+  newChar.profession.abilities.push({
     name: t('character.placeholders.professionAbility'),
     description: '',
     level: 0,
     statistic: 'Intelligence',
   })
+  character.value = newChar
   saveCharacter()
 }
 const handleAddSpell = () => {
-  character.spells.push({
+  const newChar = character.value
+  newChar.spells.push({
     name: t('character.placeholders.spell'),
     cost: '',
     effect: '',
     range: '',
   })
+  character.value = newChar
   saveCharacter()
 }
 const handleAddHex = () => {
-  character.hexes.push({
+  const newChar = character.value
+  newChar.hexes.push({
     name: t('character.placeholders.hex'),
     cost: '',
     effect: '',
   })
+  character.value = newChar
   saveCharacter()
 }
 const handleAddRitual = () => {
-  character.rituals.push({
+  const newChar = character.value
+  newChar.rituals.push({
     name: t('character.placeholders.ritual'),
     components: '',
     cost: '',
@@ -142,18 +175,22 @@ const handleAddRitual = () => {
     effect: '',
     time: '',
   })
+  character.value = newChar
   saveCharacter()
 }
 const handleAddGear = () => {
-  character.gear.push({
+  const newChar = character.value
+  newChar.gear.push({
     name: t('character.placeholders.gear'),
     notes: '',
     weight: 0,
   })
+  character.value = newChar
   saveCharacter()
 }
 const handleAddWeapon = () => {
-  character.weapons.push({
+  const newChar = character.value
+  newChar.weapons.push({
     name: t('character.placeholders.weapon'),
     accuracy: 0,
     concealment: 'Small',
@@ -173,15 +210,17 @@ const handleAddWeapon = () => {
     type: [],
     weight: 0,
   })
+  character.value = newChar
   saveCharacter()
 }
 
 const fetchCharacter = async () => {
-  Object.assign(character, await getCharacter(route.params.id as string))
+  // Object.assign(character, await getCharacter(route.params.id as string))
+  character.value = (await getCharacter(route.params.id as string)) as Character
   loading.value = false
 }
 const saveCharacter = () => {
-  updateCharacter(route.params.id as string, character)
+  updateCharacter(route.params.id as string, character.value)
 }
 const confirmDeleteCharacter = async () => {
   await deleteCharacter(route.params.id as string)

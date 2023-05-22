@@ -3,7 +3,7 @@
   @click='handleScreenCoverClick()',
   :class='{ "sidebar-hidden": !store.isSidebarOpen }'
 )
-#sidebar(:class='{ "sidebar-hidden": !store.isSidebarOpen }')
+aside#sidebar(:class='{ "sidebar-hidden": !store.isSidebarOpen }')
   template(v-if='state === "default"')
     #close-sidebar-btn-wrapper
       button#close-sidebar-btn(@click='store.toggleSidebar()') X

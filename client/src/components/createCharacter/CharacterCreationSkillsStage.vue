@@ -20,10 +20,10 @@ section.character-creation-stage-content
           :id='`skill-${name}`'
         )
         label.flex-grow-1(:for='`skill-${name}`') {{  $t(`character.skill.${firstLetterLowerCase(name as string)}`) + (skill.difficult ? '*' : '')  }}
-        positive-input.input-h3(type='number', v-model='skill.level')
+        positive-input.input-h3(v-model='skill.level')
       .skill-row(v-if='character.profession.definingSkill.statistic === stat')
         label.flex-grow-1 {{ character.profession.definingSkill.name }}
-        positive-input.input-h3(type='number', v-model='character.profession.definingSkill.level')
+        positive-input.input-h3(v-model='character.profession.definingSkill.level')
 </template>
 
 <script setup lang="ts">

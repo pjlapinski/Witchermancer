@@ -3,7 +3,6 @@ section.character-creation-stage-content
   .statistic(v-for='stat in AllStatistics')
     label(:for='`stat-${stat.toLowerCase()}`') {{ $t(`character.statistic.${stat.toLowerCase()}`) }}
     positive-input.input-h3(
-      type='number',
       :id='`stat-${stat.toLowerCase()}`',
       v-model='character.statistics[stat.toLocaleLowerCase() as keyof Statistics].level'
     )

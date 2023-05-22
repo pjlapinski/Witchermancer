@@ -2,7 +2,7 @@
 section.character-creation-stage-content
   input.input-h3(v-model='character.name', :placeholder='$t("character.name")')
   h2.mt-3 {{ $t('character.age') }}
-  positive-input.input-h3(type='number', v-model='character.age')
+  positive-input.input-h3(v-model='character.age')
   input.input-h3(v-model='character.gender', :placeholder='$t("character.gender")')
   input.input-h3(v-model='character.reputation', :placeholder='$t("character.reputation")')
   h2.mt-3 {{ $t('character.socialStanding.name') }}
