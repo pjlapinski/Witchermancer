@@ -47,7 +47,6 @@ const openNameSidebar = () => {
     deletable: false,
     fields: [
       {
-        displayName: name,
         value: props.character.name,
         input: 'Text',
       },
@@ -65,7 +64,6 @@ const openAgeSidebar = () => {
     deletable: false,
     fields: [
       {
-        displayName: name,
         value: props.character.age,
         input: 'PositiveNumber',
       },
@@ -83,7 +81,6 @@ const openGenderSidebar = () => {
     deletable: false,
     fields: [
       {
-        displayName: name,
         value: props.character.gender,
         input: 'Text',
       },
@@ -101,7 +98,6 @@ const openReputationSidebar = () => {
     deletable: false,
     fields: [
       {
-        displayName: name,
         value: props.character.reputation,
         input: 'Text',
       },
@@ -119,7 +115,6 @@ const openSocialStandingSidebar = () => {
     deletable: false,
     fields: [
       {
-        displayName: name,
         value: props.character.socialStanding,
         input: 'Select',
         selectOptions: AllSocialStandings.map(ss => ({
@@ -144,7 +139,6 @@ const openImprovementPointsSidebar = () => {
     deletable: false,
     fields: [
       {
-        displayName: name,
         value: props.character.improvementPoints,
         input: 'PositiveNumber',
       },

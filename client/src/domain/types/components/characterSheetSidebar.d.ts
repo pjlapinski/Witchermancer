@@ -6,7 +6,7 @@ export type SelectOption = {
 }
 
 export type SidebarFields = {
-  displayName: string
+  displayName?: string
   input: InputOption
   value: string | number | boolean
   selectOptions?: SelectOption[]

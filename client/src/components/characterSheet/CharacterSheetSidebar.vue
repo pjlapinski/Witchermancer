@@ -9,11 +9,11 @@ aside#character-sheet-sidebar(:class='{ "character-sheet-sidebar-hidden": !open 
       ) {{ $t('characterSheet.sidebar.delete') }}
     h2.fg-5 {{ item.name }}
     .split-line.my-3
-    template(v-if='item.description')
+    template(v-if='item.description !== undefined')
       p {{ item.description }}
       .split-line.my-3
     .character-sheet-sidebar-item(v-for='field in item.fields')
-      h3.mb-3 {{ field.displayName }}
+      h3.mb-3(v-if='field.displayName !== undefined') {{ field.displayName }}
       input.sidebar-input(
         v-if='field.input === "Number"',
         type='number',
