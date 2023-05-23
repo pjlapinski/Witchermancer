@@ -19,6 +19,12 @@ const routes: RouteRecordRaw[] = [
     name: 'CharacterSheet',
     component: CharacterSheet,
   },
+  {
+    path: '/:pathMatch(.*)*',
+    redirect: {
+      name: 'Home',
+    },
+  },
 ]
 
 export default createRouter({
