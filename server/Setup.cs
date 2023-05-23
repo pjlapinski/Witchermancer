@@ -60,6 +60,7 @@ public class WitchermancerBuilder
 
         app.UseCookiePolicy();
         app.UseRequestSchemeForceHttps();
+        app.UseSpaRedirection();
         app.UseAuthentication();
         app.UseAuthorization();
 
