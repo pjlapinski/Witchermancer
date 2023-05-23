@@ -23,10 +23,10 @@ section#derived-section.character-sheet-section
     h3 {{ round(getLeapScore(character)) }}m
   .item-row(@click='openKickSidebar')
     h3 {{ $t('character.kick') }}
-    h3 1{{ $t('character.generic.dieRollSymbol') }}6 {{ getKickDamage(character).modifier >= 0 ? '+' : '-' }} {{ getKickDamage(character).modifier }}
+    h3 1{{ $t('character.generic.dieRollSymbol') }}6{{ getKickDamage(character).modifier >= 0 ? '+' : '' }}{{ getKickDamage(character).modifier }}
   .item-row(@click='openPunchSidebar')
     h3 {{ $t('character.punch') }}
-    h3 1{{ $t('character.generic.dieRollSymbol') }}6 {{ getPunchDamage(character).modifier >= 0 ? '+' : '-' }} {{ getPunchDamage(character).modifier }}
+    h3 1{{ $t('character.generic.dieRollSymbol') }}6{{ getPunchDamage(character).modifier >= 0 ? '+' : '' }}{{ getPunchDamage(character).modifier }}
 </template>
 <script setup lang="ts">
 import type { Character } from '@/domain/types/character'

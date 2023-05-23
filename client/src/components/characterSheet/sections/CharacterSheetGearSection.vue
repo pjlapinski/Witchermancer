@@ -98,7 +98,9 @@ const openWeaponSidebar = (idx: number) => {
     name: weapon.name,
     description: `${dmg.diceAmount}${t('character.generic.dieRollSymbol')}${
       dmg.diceType
-    } + ${dmg.modifier}${weapon.notes.length > 0 ? '\n\n' : ''}${weapon.notes}`,
+    }${dmg.modifier >= 0 ? '+' : ''}${dmg.modifier}${
+      weapon.notes.length > 0 ? '\n\n' : ''
+    }${weapon.notes}`,
     deletable: true,
     fields: [
       {
