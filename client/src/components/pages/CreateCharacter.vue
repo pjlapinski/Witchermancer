@@ -61,6 +61,11 @@ import CharacterCreationSummaryStage from '@/components/createCharacter/Characte
 import type { Language } from '@/domain/types/language'
 import type { Skill } from '@/domain/types/character'
 import { useRouter } from 'vue-router'
+import {
+  getHealthPoints,
+  getStaminaScore,
+  getStunScore,
+} from '@/domain/utility/character'
 
 const character = reactive(createDefaultCharacter())
 const nativeLang = ref<Language>('CommonSpeech')
@@ -70,6 +75,9 @@ const creationStep = ref(0)
 const router = useRouter()
 
 const finishCharacterCreation = async () => {
+  character.currentHealthPoints = getHealthPoints(character)
+  character.currentStamina = getStaminaScore(character)
+  character.currentStun = getStunScore(character)
   const char = await createCharacter(character)
   router.push({
     name: 'CharacterSheet',

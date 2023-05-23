@@ -184,6 +184,7 @@ const handleAddGear = () => {
     name: t('character.placeholders.gear'),
     notes: '',
     weight: 0,
+    amount: 1,
   })
   character.value = newChar
   saveCharacter()
@@ -202,13 +203,13 @@ const handleAddWeapon = () => {
     effect: '',
     enhancements: {
       available: 0,
-      inserted: [],
+      inserted: '',
     },
-    handsRequired: 1,
     range: '',
     reliability: 1,
-    type: [],
+    type: '',
     weight: 0,
+    notes: '',
   })
   character.value = newChar
   saveCharacter()

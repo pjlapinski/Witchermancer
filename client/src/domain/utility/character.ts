@@ -152,6 +152,18 @@ export const createDefaultCharacter = (): Character => {
   }
 }
 
+export const stunMod = 'stun'
+export const healthMod = 'health'
+export const staminaMod = 'stamina'
+export const recoveryMod = 'recovery'
+export const woundThresholdMod = 'woundThreshold'
+export const runMod = 'run'
+export const leapMod = 'leap'
+export const encumbranceMod = 'encumbrance'
+export const damageMod = 'damage'
+export const armorMod = 'armor'
+export const vigorMod = 'vigor'
+
 export const getPhysicalTableScore = (character: Character) =>
   Math.floor(
     (character.statistics.body.level +
@@ -161,36 +173,36 @@ export const getPhysicalTableScore = (character: Character) =>
       2,
   )
 export const getStunScore = (character: Character) =>
-  getPhysicalTableScore(character) * 10 + getModifier(character, 'stun')
+  getPhysicalTableScore(character) * 10 + getModifier(character, stunMod)
 export const getHealthPoints = (character: Character) =>
-  getPhysicalTableScore(character) * 5 + getModifier(character, 'health')
+  getPhysicalTableScore(character) * 5 + getModifier(character, healthMod)
 export const getStaminaScore = (character: Character) =>
-  getPhysicalTableScore(character) * 5 + getModifier(character, 'stamina')
+  getPhysicalTableScore(character) * 5 + getModifier(character, staminaMod)
 export const getRecoveryScore = (character: Character) =>
-  getPhysicalTableScore(character) + getModifier(character, 'recovery')
+  getPhysicalTableScore(character) + getModifier(character, recoveryMod)
 export const getWoundThreshold = (character: Character) =>
-  getPhysicalTableScore(character) + getModifier(character, 'woundThreshold')
+  getPhysicalTableScore(character) + getModifier(character, woundThresholdMod)
 export const getRunScore = (character: Character) =>
-  (character.statistics.speed.level + getModifier(character, 'speed')) * 3 +
-  getModifier(character, 'run')
+  getStatistic(character, 'speed') * 3 + getModifier(character, runMod)
 export const getLeapScore = (character: Character) =>
-  getRunScore(character) / 5 + getModifier(character, 'leap')
+  getRunScore(character) / 5 + getModifier(character, leapMod)
 export const getEncumbranceScore = (character: Character) =>
-  (character.statistics.body.level + getModifier(character, 'body')) * 10 +
-  getModifier(character, 'encumbrance')
+  getStatistic(character, 'body') * 10 + getModifier(character, encumbranceMod)
 export const getEncumbrancePenalty = (character: Character) => {
   const overLimit = getCarriedWeight(character) - getEncumbranceScore(character)
   return overLimit <= 0 ? 0 : Math.max(1, Math.floor(overLimit / 5))
 }
 export const getCarriedWeight = (character: Character) =>
-  character.gear.reduce((val, gear, idx, arr) => val + gear.weight, 0)
+  character.gear.reduce((val, gear) => val + gear.weight * gear.amount, 0) +
+  character.weapons.reduce((val, wpn) => val + wpn.weight, 0) +
+  (character.armor.head?.weight ?? 0) +
+  (character.armor.legs?.weight ?? 0) +
+  (character.armor.torso?.weight ?? 0) +
+  (character.armor.shield?.weight ?? 0)
 export const getBonusMeleeDamage = (character: Character) =>
-  Math.ceil(
-    (character.statistics.body.level + getModifier(character, 'body')) / 2,
-  ) *
-    2 -
+  Math.ceil(getStatistic(character, 'body') / 2) * 2 -
   6 +
-  getModifier(character, 'damage')
+  getModifier(character, damageMod)
 export const getPunchDamage = (character: Character): DieRoll => ({
   diceAmount: 1,
   diceType: 6,
@@ -211,16 +223,33 @@ export const getWeaponDamage = (character: Character, idx: number): DieRoll => {
 }
 export const getStoppingPower = (character: Character, section: ArmorSection) =>
   (character.armor[section]?.stoppingPower ?? 0) +
-  getModifier(character, 'armor')
+  getModifier(character, armorMod)
 export const getVigor = (character: Character) => {
   const base = character.profession.vigor
-  return base === 0 ? 0 : base + getModifier(character, 'vigor')
+  return base === 0 ? 0 : base + getModifier(character, vigorMod)
 }
 export const getModifier = (character: Character, modifier: string) =>
   character.modifiers[modifier] ?? 0
-export const getStatistic = (character: Character, statistic: string) =>
-  character.statistics[statistic as keyof Statistics].level +
-  getModifier(character, statistic)
+export const getStatistic = (character: Character, statistic: string) => {
+  let penalty = 0
+  if (statistic === 'dexterity' || statistic === 'reflex')
+    penalty =
+      (character.armor.head?.encumbranceValue ?? 0) +
+      (character.armor.legs?.encumbranceValue ?? 0) +
+      (character.armor.torso?.encumbranceValue ?? 0) +
+      (character.armor.shield?.encumbranceValue ?? 0)
+  if (
+    statistic === 'dexterity' ||
+    statistic === 'reflex' ||
+    statistic === 'speed'
+  )
+    penalty += getEncumbrancePenalty(character)
+  return (
+    character.statistics[statistic as keyof Statistics].level +
+    getModifier(character, statistic) -
+    penalty
+  )
+}
 export const getSkill = (
   character: Character,
   statistic: string,

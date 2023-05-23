@@ -2,14 +2,14 @@
 
 public record Weapon(
     string Name,
-    string[] Type,
+    string Type,
     int Accuracy,
     DieRoll Damage,
     int Reliability,
-    int HandsRequired,
     string Range,
     string Effect,
     string Concealment,
     ItemEnhancements Enhancements,
+    string Notes,
     float Weight
 );

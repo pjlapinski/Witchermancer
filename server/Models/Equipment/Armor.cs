@@ -6,5 +6,6 @@ public record Armor(
     ItemEnhancements Enhancements,
     string Effect,
     int EncumbranceValue,
+    string Notes,
     float Weight
 );
