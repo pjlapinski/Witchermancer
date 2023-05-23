@@ -1,6 +1,6 @@
 <template lang="pug">
 section#notes-section.character-sheet-section
-  .px-5.mt-3.d-flex.flex-col
+  .px-5.my-3.d-flex.flex-col
     resize-textarea.textarea-h3(
       v-model='character.notes',
       @blur.native='$emit("save")',

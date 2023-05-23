@@ -75,7 +75,7 @@ $transition-duration: 0.2s;
 #character-sheet-sidebar-content {
   @extend .pb-5, .px-3;
 
-  overflow: scroll;
+  overflow-y: scroll;
 }
 
 .character-sheet-sidebar-hidden {
