@@ -22,6 +22,7 @@ section.character-creation-stage-content
         v-model='perk.description'
       )
 </template>
+
 <script setup lang="ts">
 import type { Character } from '@/domain/types/character'
 import { AllLanguages, type Language } from '@/domain/types/language'

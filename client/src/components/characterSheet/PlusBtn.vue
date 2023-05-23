@@ -6,6 +6,7 @@ div &nbsp;
 <script setup lang="ts">
 const emit = defineEmits(['click'])
 </script>
+
 <style scoped lang="scss">
 .plus-btn {
   @extend .btn, .mx-5, .text-center, .h3;

@@ -1,5 +1,6 @@
 <template lang="pug">
 section#gear-section.character-sheet-section
+  h2.section-title {{ $t('characterSheet.section.gear') }}
   .item-row.mt-5(@click='openEncumbranceSidebar')
     h3 {{ $t('character.encumbrance') }}
     h3 {{ getCarriedWeight(character) }} / {{ getEncumbranceScore(character) }}
@@ -26,6 +27,7 @@ section#gear-section.character-sheet-section
   .item-row(v-for='(gear, i) in character.gear', @click='openGear(i)')
     h3 {{ gear.name }}
 </template>
+
 <script setup lang="ts">
 import type { Character } from '@/domain/types/character'
 import type { OpenSidebarFn } from '@/domain/types/components/characterSheetSidebar'

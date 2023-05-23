@@ -1,5 +1,6 @@
 <template lang="pug">
 section#race-section.character-sheet-section
+  h2.section-title {{ $t('characterSheet.section.race') }}
   .item-row.my-3(@click='openNameSidebar')
     h2.fg-5 {{ character.race.name }}
   .split-line
@@ -11,6 +12,7 @@ section#race-section.character-sheet-section
   )
     h3 {{ perk.name }}
 </template>
+
 <script setup lang="ts">
 import type { Character } from '@/domain/types/character'
 import type { OpenSidebarFn } from '@/domain/types/components/characterSheetSidebar'

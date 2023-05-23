@@ -1,5 +1,6 @@
 <template lang="pug">
 section#life-section.character-sheet-section
+  h2.section-title {{ $t('characterSheet.section.personal') }}
   .item-row.my-3(@click='openNameSidebar')
     h2.fg-5 {{ character.name }}
   .split-line.mb-3
@@ -26,6 +27,7 @@ section#life-section.character-sheet-section
       :placeholder='$t("character.lifePath")'
     )
 </template>
+
 <script setup lang="ts">
 import type { Character } from '@/domain/types/character'
 import type { OpenSidebarFn } from '@/domain/types/components/characterSheetSidebar'

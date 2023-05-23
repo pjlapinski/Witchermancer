@@ -1,5 +1,6 @@
 <template lang="pug">
 section#skills-section.character-sheet-section
+  h2.section-title.mb-3 {{ $t('characterSheet.section.stats') }}
   template(v-for='stat in AllStatistics')
     .item-row.py-2.bg-2(@click='openStatisticSidebar(stat)')
       h2 {{ $t(`character.statistic.${stat.toLowerCase()}`) }}
@@ -25,6 +26,7 @@ section#skills-section.character-sheet-section
         h3 {{ profAbility.name }}
         h3 {{ profAbility.level }}
 </template>
+
 <script setup lang="ts">
 import type {
   Character,
@@ -148,7 +150,7 @@ const openSkillSidebar = (stat: Statistic, skill: string) => {
     ],
     editCallback(fields) {
       const statistics: Statistics = { ...props.character.statistics }
-      const s = (statistics[statistic as keyof Statistics] as StatisticWithSkills)
+      const s = statistics[statistic as keyof Statistics] as StatisticWithSkills
       s.skills[skill].level = fields[0].value as number
       const modifiers = { ...props.character.modifiers }
       modifiers[skill] = fields[1].value as number

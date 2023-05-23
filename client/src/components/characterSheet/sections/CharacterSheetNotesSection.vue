@@ -1,5 +1,6 @@
 <template lang="pug">
 section#notes-section.character-sheet-section
+  h2.section-title {{ $t('characterSheet.section.notes') }}
   .px-5.my-3.d-flex.flex-col
     resize-textarea.textarea-h3(
       v-model='character.notes',
@@ -7,6 +8,7 @@ section#notes-section.character-sheet-section
       :placeholder='$t("character.notes")'
     )
 </template>
+
 <script setup lang="ts">
 import type { Character } from '@/domain/types/character'
 

@@ -1,5 +1,6 @@
 <template lang="pug">
 section#magic-section.character-sheet-section
+  h2.section-title {{ $t('characterSheet.section.magic') }}
   .item-row.mt-5(@click='openVigorSidebar')
     h3 {{ $t('character.vigor') }}
     h3 {{ getVigor(character) }}
@@ -25,6 +26,7 @@ section#magic-section.character-sheet-section
   )
     h3 {{ ritual.name }}
 </template>
+
 <script setup lang="ts">
 import type { Character } from '@/domain/types/character'
 import type { OpenSidebarFn } from '@/domain/types/components/characterSheetSidebar'

@@ -1,5 +1,6 @@
 <template lang="pug">
 section#derived-section.character-sheet-section
+  h2.section-title {{ $t('characterSheet.section.derived') }}
   .item-row.mt-3(@click='openHealthSidebar')
     h3 {{ $t('character.healthPoints') }}
     h3 {{ character.currentHealthPoints }} / {{ getHealthPoints(character) }}
@@ -28,6 +29,7 @@ section#derived-section.character-sheet-section
     h3 {{ $t('character.punch') }}
     h3 1{{ $t('character.generic.dieRollSymbol') }}6{{ getPunchDamage(character).modifier >= 0 ? '+' : '' }}{{ getPunchDamage(character).modifier }}
 </template>
+
 <script setup lang="ts">
 import type { Character } from '@/domain/types/character'
 import type { OpenSidebarFn } from '@/domain/types/components/characterSheetSidebar'

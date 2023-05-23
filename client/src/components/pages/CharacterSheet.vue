@@ -2,37 +2,37 @@
 main#character-sheet(v-if='!loading')
   #section-selector
     select(v-model='openSection')
-      option(v-for='(_, i) in 9', :value='i') {{ $t(`characterSheet.section.${i}`) }}
+      option(v-for='section in sectionNames', :value='section') {{ $t(`characterSheet.section.${section}`) }}
   character-sheet-personal-section(
-    :class='{ "section-hidden": openSection !== 0 }',
+    :class='{ "section-hidden": openSection !== "personal" }',
     :character='character',
     :open-sidebar-fn='openSidebar',
     @save='saveCharacter'
   )
   character-sheet-derived-section(
-    :class='{ "section-hidden": openSection !== 1 }',
+    :class='{ "section-hidden": openSection !== "derived" }',
     :character='character',
     :open-sidebar-fn='openSidebar'
   )
   character-sheet-race-section(
-    :class='{ "section-hidden": openSection !== 2 }',
+    :class='{ "section-hidden": openSection !== "race" }',
     :character='character',
     :open-sidebar-fn='openSidebar',
     @add-perk='handleAddRacialPerk'
   )
   character-sheet-profession-section(
-    :class='{ "section-hidden": openSection !== 3 }',
+    :class='{ "section-hidden": openSection !== "profession" }',
     :character='character',
     :open-sidebar-fn='openSidebar',
     @add-ability='handleAddProfessionAbility'
   )
   character-sheet-skills-section(
-    :class='{ "section-hidden": openSection !== 4 }',
+    :class='{ "section-hidden": openSection !== "stats" }',
     :character='character',
     :open-sidebar-fn='openSidebar'
   )
   character-sheet-magic-section(
-    :class='{ "section-hidden": openSection !== 5 }',
+    :class='{ "section-hidden": openSection !== "magic" }',
     :character='character',
     :open-sidebar-fn='openSidebar',
     @add-hex='handleAddHex',
@@ -40,19 +40,19 @@ main#character-sheet(v-if='!loading')
     @add-spell='handleAddSpell'
   )
   character-sheet-gear-section(
-    :class='{ "section-hidden": openSection !== 6 }',
+    :class='{ "section-hidden": openSection !== "gear" }',
     :character='character',
     :open-sidebar-fn='openSidebar',
     @add-gear='handleAddGear',
     @add-weapon='handleAddWeapon'
   )
   character-sheet-notes-section(
-    :class='{ "section-hidden": openSection !== 7 }',
+    :class='{ "section-hidden": openSection !== "notes" }',
     :character='character',
     @save='saveCharacter'
   )
   character-sheet-delete-section(
-    :class='{ "section-hidden": openSection !== 8 }',
+    :class='{ "section-hidden": openSection !== "delete" }',
     @confirm-delete='confirmDeleteCharacter'
   )
 character-sheet-sidebar(
@@ -86,6 +86,18 @@ import { useRoute, useRouter } from 'vue-router'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
+const sectionNames = [
+  'personal',
+  'derived',
+  'race',
+  'profession',
+  'stats',
+  'magic',
+  'gear',
+  'notes',
+  'delete',
+] as const
+
 const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
@@ -102,7 +114,7 @@ const sidebarItem = ref<OpenedItem>({
   fields: [],
 })
 
-const openSection = ref(0)
+const openSection = ref<(typeof sectionNames)[number]>('personal')
 
 const openSidebar = (item: OpenedItem) => {
   sidebarItem.value = item
@@ -216,7 +228,6 @@ const handleAddWeapon = () => {
 }
 
 const fetchCharacter = async () => {
-  // Object.assign(character, await getCharacter(route.params.id as string))
   character.value = (await getCharacter(route.params.id as string)) as Character
   loading.value = false
 }
@@ -247,27 +258,43 @@ fetchCharacter()
   }
 }
 
+.section-title {
+  @extend .text-center, .fg-5;
+}
+
 @media only screen and (max-width: 768px) {
   .section-hidden {
     display: none !important;
   }
-}
 
-.character-sheet-section {
-  flex: 0 0 100%;
-  width: 100%;
+  .character-sheet-section {
+    flex: 0 0 100%;
+    width: 100%;
+  }
+
+  .section-title {
+    display: none;
+  }
 }
 
 @media only screen and (min-width: 768px) {
+  #character-sheet {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin: 1rem 3rem;
+    gap: 5px;
+  }
+
   #section-selector {
     display: none;
   }
 
   .character-sheet-section {
-    flex: 0 0 50%;
-    width: 50%;
-    border: 1px solid var(--color-2);
+    border: 2px solid var(--color-2);
     padding: #{sizeof(5)};
+
+    max-height: 400px;
+    overflow-y: auto;
   }
 }
 

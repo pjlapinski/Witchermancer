@@ -5,11 +5,13 @@ section#character-list
     :to='{ name: "CharacterSheet", params: { id: char.idString } }'
   ) {{ char.name }}
 </template>
+
 <script setup lang="ts">
 import type { Character } from '@/domain/types/character'
 
 const props = defineProps<{ characters: Character[] }>()
 </script>
+
 <style scoped lang="scss">
 #character-list {
   @extend .d-flex, .flex-col, .w-100, .mt-5;

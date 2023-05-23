@@ -11,6 +11,7 @@
     ) 
       | {{ $t(`lang.${locale}`) }}
 </template>
+
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 
@@ -23,6 +24,7 @@ const handleLocaleClick = (lang: string) => {
   emit('close')
 }
 </script>
+
 <style scoped lang="scss">
 #lang-list-title {
   @extend .p-1, .d-flex, .pr-5;
@@ -36,7 +38,6 @@ const handleLocaleClick = (lang: string) => {
 
   padding-left: #{sizeof(2)};
   padding-right: #{sizeof(2)};
-  border-radius: 8px;
 
   &:hover {
     @extend .bg-1;

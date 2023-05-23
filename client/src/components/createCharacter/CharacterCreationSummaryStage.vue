@@ -3,6 +3,7 @@ section.character-creation-stage-content
   p.h3 {{ $t('characterCreation.step6.summary') }}
   button.h3.btn.mt-5(@click='handleFinishClick', ref='finishBtn') {{ $t('characterCreation.step6.finish') }}
 </template>
+
 <script setup lang="ts">
 import { ref } from 'vue'
 

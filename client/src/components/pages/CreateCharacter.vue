@@ -47,6 +47,7 @@ main#character-creation
     @finish='finishCharacterCreation'
   )
 </template>
+
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import { createDefaultCharacter } from '@/domain/utility/character'
@@ -132,6 +133,7 @@ const toggleProfessionSkill = (name: string, skill: Skill) => {
   }
 }
 </script>
+
 <style lang="scss">
 .character-creation-stage-content {
   @extend .d-flex, .flex-col;

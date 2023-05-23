@@ -49,6 +49,7 @@ aside#character-sheet-sidebar(:class='{ "character-sheet-sidebar-hidden": !open 
       )
         option(v-for='opt in field.selectOptions', :value="opt.value") {{ opt.text }}
 </template>
+
 <script setup lang="ts">
 import type { OpenedItem } from '@/domain/types/components/characterSheetSidebar'
 import PositiveInput from '@/components/utility/PositiveInput.vue'
@@ -59,12 +60,15 @@ const props = defineProps<{
 }>()
 const emit = defineEmits(['close', 'edited', 'deleted'])
 </script>
+
 <style scoped lang="scss">
 $transition-duration: 0.2s;
+$sidebar-large-width: 600px;
 
 #character-sheet-sidebar {
-  @extend .bg-3, .vh-100, .vw-100, .d-flex, .flex-col;
+  @extend .bg-3, .vh-100, .d-flex, .flex-col;
 
+  width: 100vw;
   position: fixed;
   top: 0;
   left: 0;
@@ -100,5 +104,14 @@ $transition-duration: 0.2s;
 
 p {
   white-space: pre-line;
+}
+
+@media only screen and (min-width: 768px) {
+  #character-sheet-sidebar {
+    width: $sidebar-large-width;
+    box-shadow: 2px 0 10px black;
+    right: 0;
+    left: auto;
+  }
 }
 </style>

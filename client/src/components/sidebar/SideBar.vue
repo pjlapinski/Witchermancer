@@ -104,7 +104,6 @@ $sidebar-large-width: 200px;
 .sidebar-item {
   @extend .p-1, .cursor-ptr, .no-select, .d-flex, .pr-5;
 
-  border-radius: 8px;
   justify-content: space-between;
   align-items: center;
 
