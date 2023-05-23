@@ -19,60 +19,84 @@ public class CharacterRoutes : IRoutesDefinition
     }
 
     [Authorize]
-    private static async Task<IResult> GetCharacter(HttpContext ctx, CharactersService service, [FromRoute] string id)
+    private static async Task<IResult> GetCharacter(HttpContext ctx, CharactersService service, [FromRoute] string id, ILogger<CharacterRoutes> logger)
     {
         var character = await service.GetByIdAsync(id);
-        if (character is null) return Results.NotFound();
+        if (character is null)
+        {
+            logger.LogInformation("[GetCharacter] Id: {} - 404", id);
+            return Results.NotFound();
+        }
         character.Id = null;
-        return character.OwnerEmail == ctx.User.GetEmail() ? Results.Ok(character) : Results.Unauthorized();
+        var userEmail = ctx.User.GetEmail();
+        if (character.OwnerEmail != userEmail)
+        {
+            logger.LogInformation("[GetCharacter] Id: {}, Owner: {}, Requester: {} - 401", id, character.OwnerEmail, userEmail);
+            return Results.Unauthorized();
+        }
+        logger.LogInformation("[GetCharacter] Id: {} - 200", id);
+        return Results.Ok(character);
     }
 
     [Authorize]
-    private static async Task<IResult> GetUserCharacters(HttpContext ctx, CharactersService service)
+    private static async Task<IResult> GetUserCharacters(HttpContext ctx, CharactersService service, ILogger<CharacterRoutes> logger)
     {
-        var characters = await service.GetByEmailAsync(ctx.User.GetEmail());
+        var userEmail = ctx.User.GetEmail();
+        var characters = await service.GetByEmailAsync(userEmail);
         characters.ForEach(ch => ch.Id = null);
+        logger.LogInformation("[GetUserCharacters] Owner: {} - 200", userEmail);
         return Results.Ok(characters);
     }
 
     [Authorize]
-    private static async Task<IResult> CreateCharacter(
-        HttpContext ctx,
-        CharactersService service,
-        [FromBody] Character character
-    )
+    private static async Task<IResult> CreateCharacter(HttpContext ctx, CharactersService service, [FromBody] Character character, ILogger<CharacterRoutes> logger)
     {
         character.OwnerEmail = ctx.User.GetEmail();
         var ch = await service.CreateAsync(character);
         ch.Id = null;
+        logger.LogInformation("[CreateCharacter] Owner: {}, Id: {} - 200", ch.OwnerEmail, ch.IdString);
         return Results.Ok(ch);
     }
 
     [Authorize]
-    private static async Task<IResult> UpdateCharacter(
-        HttpContext ctx,
-        CharactersService service,
-        [FromRoute] string id,
-        [FromBody] Character character
-    )
+    private static async Task<IResult> UpdateCharacter(HttpContext ctx, CharactersService service, [FromRoute] string id, [FromBody] Character character, ILogger<CharacterRoutes> logger)
     {
         var existingChar = await service.GetByIdAsync(id);
-        if (existingChar is null) return Results.NotFound();
-        if (existingChar.OwnerEmail != ctx.User.GetEmail()) return Results.Unauthorized();
+        if (existingChar is null)
+        {
+            logger.LogInformation("[UpdateCharacter] Id: {} - 404", id);
+            return Results.NotFound();
+        }
+        var userEmail = ctx.User.GetEmail();
+        if (existingChar.OwnerEmail != userEmail)
+        {
+            logger.LogInformation("[UpdateCharacter] Id: {}, Owner: {}, Requester: {}  - 401", id, character.OwnerEmail, userEmail);
+            return Results.Unauthorized();
+        }
         character.Id = existingChar.Id;
         character.IdString = id;
         await service.UpdateAsync(character);
+        logger.LogInformation("[UpdateCharacter] Id: {} - 200", id);
         return Results.Ok();
     }
 
     [Authorize]
-    private static async Task<IResult> DeleteCharacter(HttpContext ctx, CharactersService service,
-        [FromRoute] string id)
+    private static async Task<IResult> DeleteCharacter(HttpContext ctx, CharactersService service, [FromRoute] string id, ILogger<CharacterRoutes> logger)
     {
         var character = await service.GetByIdAsync(id);
-        if (character is null) return Results.NotFound();
-        if (character.OwnerEmail != ctx.User.GetEmail()) return Results.Unauthorized();
+        if (character is null)
+        {
+            logger.LogInformation("[DeleteCharacter] Id: {} - 404", id);
+            return Results.NotFound();
+        }
+        var userEmail = ctx.User.GetEmail();
+        if (character.OwnerEmail != userEmail)
+        {
+            logger.LogInformation("[DeleteCharacter] Id: {}, Owner: {}, Requester: {} - 401", id, character.OwnerEmail, userEmail);
+            return Results.Unauthorized();
+        }
         await service.DeleteAsync(id);
+        logger.LogInformation("[DeleteCharacter] Id: {} - 200", id);
         return Results.Ok();
     }
 }
