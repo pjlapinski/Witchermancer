@@ -79,6 +79,7 @@ const finishCharacterCreation = async () => {
   character.currentHealthPoints = getHealthPoints(character)
   character.currentStamina = getStaminaScore(character)
   character.currentStun = getStunScore(character)
+  character.statistics.luck.current = character.statistics.luck.level
   const char = await createCharacter(character)
   router.push({
     name: 'CharacterSheet',
