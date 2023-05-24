@@ -70,6 +70,8 @@ public class WitchermancerBuilder
 
         app.UseRouteDefinitions();
 
+        app.MapGet("/api/ping", () => Results.Ok());
+
         return app;
     }
 }

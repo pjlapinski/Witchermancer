@@ -17,3 +17,5 @@ export const updateCharacter = (id: string, character: Character) =>
   axios.post(`/api/char/${id}`, character)
 
 export const deleteCharacter = (id: string) => axios.delete(`/api/char/${id}`)
+
+export const keepAlive = () => axios.get('/api/ping')
