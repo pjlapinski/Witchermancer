@@ -3,7 +3,7 @@ section#gear-section.character-sheet-section
   h2.section-title {{ $t('characterSheet.section.gear') }}
   .item-row.mt-5(@click='openEncumbranceSidebar')
     h3 {{ $t('character.encumbrance') }}
-    h3 {{ getCarriedWeight(character) }} / {{ getEncumbranceScore(character) }}
+    h3 {{ round(getCarriedWeight(character)) }} / {{ getEncumbranceScore(character) }}
   .item-row.mb-3(@click='openMoneySidebar')
     h3 {{ $t('character.money') }}
     h3 {{ character.money }}
@@ -40,6 +40,7 @@ import {
   damageMod,
   getWeaponDamage,
 } from '@/domain/utility/character'
+import { round } from '@/domain/utility/math'
 import type { Concealment } from '@/domain/types/gear'
 import { AllArmorSections, type ArmorSection } from '@/domain/types/armor'
 import PlusBtn from '@/components/characterSheet/PlusBtn.vue'
