@@ -14,6 +14,7 @@ section#gear-section.character-sheet-section
     @click='openWeaponSidebar(i)'
   )
     h3 {{ weapon.name }}
+    h3 {{ formatDmgBonus(weapon) }}{{ formatDieRoll(getWeaponDamage(character, i), t) }}
   h2.mx-5.py-3 {{ $t('character.armor') }}
   .item-row(
     v-for='section in AllArmorSections',
@@ -26,6 +27,7 @@ section#gear-section.character-sheet-section
   plus-btn(@click='$emit("add-gear")')
   .item-row(v-for='(gear, i) in character.gear', @click='openGear(i)')
     h3 {{ gear.name }}
+    h3 {{ gear.amount }}
 </template>
 
 <script setup lang="ts">
@@ -41,7 +43,8 @@ import {
   getWeaponDamage,
 } from '@/domain/utility/character'
 import { round } from '@/domain/utility/math'
-import type { Concealment } from '@/domain/types/gear'
+import { formatDieRoll } from '@/domain/utility/string'
+import type { Concealment, Weapon } from '@/domain/types/gear'
 import { AllArmorSections, type ArmorSection } from '@/domain/types/armor'
 import PlusBtn from '@/components/characterSheet/PlusBtn.vue'
 import { useI18n } from 'vue-i18n'
@@ -54,6 +57,11 @@ const props = defineProps<{
   openSidebarFn: OpenSidebarFn
 }>()
 const emit = defineEmits(['add-gear', 'add-weapon'])
+
+const formatDmgBonus = (weapon: Weapon) => {
+  if (weapon.accuracy === 0) return ''
+  return `${weapon.accuracy > 0 ? '+' : ''}${weapon.accuracy} | `
+}
 
 const openEncumbranceSidebar = () =>
   props.openSidebarFn({
@@ -96,14 +104,9 @@ const openMoneySidebar = () =>
 
 const openWeaponSidebar = (idx: number) => {
   const weapon = props.character.weapons[idx]
-  const dmg = getWeaponDamage(props.character, idx)
   props.openSidebarFn({
     name: weapon.name,
-    description: `${dmg.diceAmount}${t('character.generic.dieRollSymbol')}${
-      dmg.diceType
-    }${dmg.modifier >= 0 ? '+' : ''}${dmg.modifier}${
-      weapon.notes.length > 0 ? '\n\n' : ''
-    }${weapon.notes}`,
+    description: weapon.notes,
     deletable: true,
     fields: [
       {

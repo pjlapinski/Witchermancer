@@ -24,10 +24,10 @@ section#derived-section.character-sheet-section
     h3 {{ round(getLeapScore(character)) }}m
   .item-row(@click='openKickSidebar')
     h3 {{ $t('character.kick') }}
-    h3 1{{ $t('character.generic.dieRollSymbol') }}6{{ getKickDamage(character).modifier >= 0 ? '+' : '' }}{{ getKickDamage(character).modifier }}
+    h3 {{ formatDieRoll(getKickDamage(character), t) }}
   .item-row(@click='openPunchSidebar')
     h3 {{ $t('character.punch') }}
-    h3 1{{ $t('character.generic.dieRollSymbol') }}6{{ getPunchDamage(character).modifier >= 0 ? '+' : '' }}{{ getPunchDamage(character).modifier }}
+    h3 {{ formatDieRoll(getPunchDamage(character), t) }}
 </template>
 
 <script setup lang="ts">
@@ -54,6 +54,7 @@ import {
   damageMod,
 } from '@/domain/utility/character'
 import { round } from '@/domain/utility/math'
+import { formatDieRoll } from '@/domain/utility/string'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()

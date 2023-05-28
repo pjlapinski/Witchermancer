@@ -138,7 +138,7 @@ const handleSidebarDelete = () => {
 
 const handleAddRacialPerk = () => {
   const newChar = character.value
-  newChar.race.perks.push({
+  newChar.race.perks.unshift({
     name: t('character.placeholders.racialPerk'),
     description: '',
   })
@@ -147,7 +147,7 @@ const handleAddRacialPerk = () => {
 }
 const handleAddProfessionAbility = () => {
   const newChar = character.value
-  newChar.profession.abilities.push({
+  newChar.profession.abilities.unshift({
     name: t('character.placeholders.professionAbility'),
     description: '',
     level: 0,
@@ -158,7 +158,7 @@ const handleAddProfessionAbility = () => {
 }
 const handleAddSpell = () => {
   const newChar = character.value
-  newChar.spells.push({
+  newChar.spells.unshift({
     name: t('character.placeholders.spell'),
     cost: '',
     effect: '',
@@ -169,7 +169,7 @@ const handleAddSpell = () => {
 }
 const handleAddHex = () => {
   const newChar = character.value
-  newChar.hexes.push({
+  newChar.hexes.unshift({
     name: t('character.placeholders.hex'),
     cost: '',
     effect: '',
@@ -179,7 +179,7 @@ const handleAddHex = () => {
 }
 const handleAddRitual = () => {
   const newChar = character.value
-  newChar.rituals.push({
+  newChar.rituals.unshift({
     name: t('character.placeholders.ritual'),
     components: '',
     cost: '',
@@ -192,7 +192,7 @@ const handleAddRitual = () => {
 }
 const handleAddGear = () => {
   const newChar = character.value
-  newChar.gear.push({
+  newChar.gear.unshift({
     name: t('character.placeholders.gear'),
     notes: '',
     weight: 0,
@@ -203,7 +203,7 @@ const handleAddGear = () => {
 }
 const handleAddWeapon = () => {
   const newChar = character.value
-  newChar.weapons.push({
+  newChar.weapons.unshift({
     name: t('character.placeholders.weapon'),
     accuracy: 0,
     concealment: 'Small',
