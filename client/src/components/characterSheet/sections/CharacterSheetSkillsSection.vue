@@ -7,10 +7,10 @@ section#skills-section.character-sheet-section
       h2(v-if='stat !== "Luck"') {{ getStatistic(character, stat.toLowerCase()) }}
       h2(v-else) {{ character.statistics.luck.current }} / {{ getStatistic(character, stat.toLowerCase()) }}
     .item-row(
-      v-for='(_, name) in (character.statistics[stat.toLowerCase() as keyof Statistics] as StatisticWithSkills).skills',
+      v-for='(skill, name) in (character.statistics[stat.toLowerCase() as keyof Statistics] as StatisticWithSkills).skills',
       @click='openSkillSidebar(stat, name as string)'
     )
-      h3 {{  $t(`character.skill.${firstLetterLowerCase(name as string)}`)  }}
+      h3 {{  $t(`character.skill.${firstLetterLowerCase(name as string)}`)  }}{{ skill.difficult ? '*' : '' }}
       h3 {{  getSkill(character, stat.toLowerCase(), name as string)  }}
     .item-row(
       v-if='character.profession.definingSkill.statistic === stat',
