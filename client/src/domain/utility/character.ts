@@ -244,11 +244,18 @@ export const getStatistic = (character: Character, statistic: string) => {
     statistic === 'speed'
   )
     penalty += getEncumbrancePenalty(character)
-  return (
+  const value = 
     character.statistics[statistic as keyof Statistics].level +
-    getModifier(character, statistic) -
-    penalty
+    getModifier(character, statistic);
+  if ((character.currentHealthPoints < getWoundThreshold(character)) &&
+    (statistic === 'intelligence' ||
+      statistic === 'reflex' ||
+      statistic === 'dexterity' ||
+      statistic === 'will')
   )
+    penalty += Math.ceil(value / 2)
+  
+  return value - penalty
 }
 export const getSkill = (
   character: Character,
