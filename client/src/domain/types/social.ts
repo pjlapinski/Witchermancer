@@ -3,5 +3,6 @@ export const AllSocialStandings = [
   'Tolerated',
   'Feared',
   'Hated',
+  'FearedAndHated'
 ] as const
 export type SocialStanding = (typeof AllSocialStandings)[number]

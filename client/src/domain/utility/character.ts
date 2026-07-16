@@ -192,6 +192,11 @@ export const getEncumbrancePenalty = (character: Character) => {
   const overLimit = getCarriedWeight(character) - getEncumbranceScore(character)
   return overLimit <= 0 ? 0 : Math.max(1, Math.floor(overLimit / 5))
 }
+export const getCurrentEncumbranceValue = (character: Character) =>
+    (character.armor.head?.encumbranceValue ?? 0) +
+    (character.armor.legs?.encumbranceValue ?? 0) +
+    (character.armor.torso?.encumbranceValue ?? 0) +
+    (character.armor.shield?.encumbranceValue ?? 0)
 export const getCarriedWeight = (character: Character) =>
   character.gear.reduce((val, gear) => val + gear.weight * gear.amount, 0) +
   character.weapons.reduce((val, wpn) => val + wpn.weight, 0) +
@@ -233,15 +238,10 @@ export const getModifier = (character: Character, modifier: string) =>
 export const getStatistic = (character: Character, statistic: string) => {
   let penalty = 0
   if (statistic === 'dexterity' || statistic === 'reflex')
-    penalty =
-      (character.armor.head?.encumbranceValue ?? 0) +
-      (character.armor.legs?.encumbranceValue ?? 0) +
-      (character.armor.torso?.encumbranceValue ?? 0) +
-      (character.armor.shield?.encumbranceValue ?? 0)
+    penalty = getCurrentEncumbranceValue(character)
   if (
     statistic === 'dexterity' ||
-    statistic === 'reflex' ||
-    statistic === 'speed'
+    statistic === 'reflex'
   )
     penalty += getEncumbrancePenalty(character)
   const value = 

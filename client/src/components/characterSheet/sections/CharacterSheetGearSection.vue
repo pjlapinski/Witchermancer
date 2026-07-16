@@ -2,11 +2,14 @@
 section#gear-section.character-sheet-section
   h2.section-title {{ $t('characterSheet.section.gear') }}
   .item-row.mt-5(@click='openEncumbranceSidebar')
-    h3 {{ $t('character.encumbrance') }}
+    h3 {{ $t('character.carryWeight') }}
     h3 {{ round(getCarriedWeight(character)) }} / {{ getEncumbranceScore(character) }}
   .item-row.mb-3(@click='openMoneySidebar')
     h3 {{ $t('character.money') }}
     h3 {{ character.money }}
+  .item-row.mt-5
+    h3 {{ $t('character.encumbranceValue') }}
+    h3 {{ getCurrentEncumbranceValue(character) }}
   h2.mx-5.py-3 {{ $t('character.weapons') }}
   plus-btn(@click='$emit("add-weapon")')
   .item-row(
@@ -40,7 +43,8 @@ import {
   encumbranceMod,
   getModifier,
   damageMod,
-  getWeaponDamage,
+  getWeaponDamage, 
+  getCurrentEncumbrance,
 } from '@/domain/utility/character'
 import { round } from '@/domain/utility/math'
 import { formatDieRoll } from '@/domain/utility/string'
@@ -65,7 +69,7 @@ const formatDmgBonus = (weapon: Weapon) => {
 
 const openEncumbranceSidebar = () =>
   props.openSidebarFn({
-    name: t('character.encumbrance'),
+    name: t('character.carryWeight'),
     deletable: false,
     fields: [
       {
