@@ -44,7 +44,7 @@ import {
   getModifier,
   damageMod,
   getWeaponDamage, 
-  getCurrentEncumbrance,
+  getCurrentEncumbranceValue,
 } from '@/domain/utility/character'
 import { round } from '@/domain/utility/math'
 import { formatDieRoll } from '@/domain/utility/string'
