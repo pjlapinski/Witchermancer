@@ -4,10 +4,10 @@ section#gear-section.character-sheet-section
   .item-row.mt-5(@click='openEncumbranceSidebar')
     h3 {{ $t('character.carryWeight') }}
     h3 {{ round(getCarriedWeight(character)) }} / {{ getEncumbranceScore(character) }}
-  .item-row.mb-3(@click='openMoneySidebar')
+  .item-row(@click='openMoneySidebar')
     h3 {{ $t('character.money') }}
     h3 {{ character.money }}
-  .item-row.mt-5
+  .item-row.mb-5
     h3 {{ $t('character.encumbranceValue') }}
     h3 {{ getCurrentEncumbranceValue(character) }}
   h2.mx-5.py-3 {{ $t('character.weapons') }}
