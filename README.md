@@ -41,10 +41,6 @@ Finally, run
 dotnet run --launch-profile https
 ```
 
-### Note
-
-.NET 6 is specifically required to run, as in .NET 7 a bug was introduced which no longer allows the app to run correctly.
-
 ## License
 
 The project is licensed under the MIT license. For full license text, see the `LICENSE` file.
