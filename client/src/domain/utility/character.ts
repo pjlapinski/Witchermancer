@@ -230,8 +230,7 @@ export const getStoppingPower = (character: Character, section: ArmorSection) =>
   (character.armor[section]?.stoppingPower ?? 0) +
   getModifier(character, armorMod)
 export const getVigor = (character: Character) => {
-  const base = character.profession.vigor
-  return base === 0 ? 0 : base + getModifier(character, vigorMod)
+  return character.profession.vigor + getModifier(character, vigorMod)
 }
 export const getModifier = (character: Character, modifier: string) =>
   character.modifiers[modifier] ?? 0

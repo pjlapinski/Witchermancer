@@ -48,6 +48,11 @@ const openVigorSidebar = () =>
     deletable: false,
     fields: [
       {
+        displayName: t('character.generic.value'),
+        input: 'Number',
+        value: props.character.profession.vigor
+      },
+      {
         displayName: t('character.bonusVigor'),
         input: 'Number',
         value: getModifier(props.character, vigorMod),
@@ -55,10 +60,14 @@ const openVigorSidebar = () =>
     ],
     editCallback(fields) {
       const mods = { ...props.character.modifiers }
-      mods[vigorMod] = fields[0].value as number
+      mods[vigorMod] = fields[1].value as number
       return {
         ...props.character,
         modifiers: mods,
+        profession: {
+          ...props.character.profession,
+          vigor: fields[0].value as number
+        }
       }
     },
   })
