@@ -60,7 +60,7 @@ section.character-creation-stage-content
       )
       input.input-h3(
         v-model='ritual.time',
-        :placeholder='$t("character.magic.time")'
+        :placeholder='$t("character.magic.duration")'
       )
       resize-textarea.textarea-h3(
         v-model='ritual.components',

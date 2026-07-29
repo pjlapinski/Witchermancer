@@ -77,9 +77,11 @@ const openSpellSidebar = (idx: number) => {
   props.openSidebarFn({
     name: spell.name,
     deletable: true,
-    description: `${t('character.magic.cost')}: ${spell.cost}\n\n${t(
-      'character.magic.range',
-    )}: ${spell.range}\n\n${t('character.magic.effect')}: ${spell.effect}`,
+    description: `${t('character.magic.cost')}: ${spell.cost}\n
+${t('character.magic.range')}: ${spell.range}\n
+${t('character.magic.duration')}: ${spell.duration ?? ''}\n
+${t('character.magic.defense')}: ${spell.defense ?? ''}\n
+${t('character.magic.effect')}: ${spell.effect}`,
     fields: [
       {
         displayName: t('character.generic.name'),
@@ -97,6 +99,16 @@ const openSpellSidebar = (idx: number) => {
         value: spell.range,
       },
       {
+        displayName: t('character.magic.duration'),
+        input: 'Text',
+        value: spell.duration ?? '',
+      },
+      {
+        displayName: t('character.magic.defense'),
+        input: 'Text',
+        value: spell.defense ?? '',
+      },
+      {
         displayName: t('character.magic.effect'),
         input: 'TextArea',
         value: spell.effect,
@@ -107,7 +119,9 @@ const openSpellSidebar = (idx: number) => {
         name: fields[0].value as string,
         cost: fields[1].value as string,
         range: fields[2].value as string,
-        effect: fields[3].value as string,
+        duration: fields[3].value as string,
+        defense: fields[4].value as string,
+        effect: fields[5].value as string,
       }
       const spells = [...props.character.spells]
       spells[idx] = newSpell
@@ -132,9 +146,10 @@ const openHexSidebar = (idx: number) => {
   props.openSidebarFn({
     name: hex.name,
     deletable: true,
-    description: `${t('character.magic.cost')}: ${hex.cost}\n\n${t(
-      'character.magic.effect',
-    )}: ${hex.effect}`,
+    description: `${t('character.magic.cost')}: ${hex.cost}\n
+${t('character.magic.danger')}: ${hex.danger ?? ''}\n
+${t('character.magic.requirementToLift')}: ${hex.requirementToLift ?? ''}\n
+${t('character.magic.effect')}: ${hex.effect}`,
     fields: [
       {
         displayName: t('character.generic.name'),
@@ -147,6 +162,16 @@ const openHexSidebar = (idx: number) => {
         value: hex.cost,
       },
       {
+        displayName: t('character.magic.danger'),
+        input: 'Text',
+        value: hex.danger ?? '',
+      },
+      {
+        displayName: t('character.magic.requirementToLift'),
+        input: 'Text',
+        value: hex.requirementToLift ?? '',
+      },
+      {
         displayName: t('character.magic.effect'),
         input: 'TextArea',
         value: hex.effect,
@@ -156,7 +181,9 @@ const openHexSidebar = (idx: number) => {
       const newHex = {
         name: fields[0].value as string,
         cost: fields[1].value as string,
-        effect: fields[2].value as string,
+        danger: fields[2].value as string,
+        requirementToLift: fields[3].value as string,
+        effect: fields[4].value as string,
       }
       const hexes = [...props.character.hexes]
       hexes[idx] = newHex
@@ -181,13 +208,12 @@ const openRitualSidebar = (idx: number) => {
   props.openSidebarFn({
     name: ritual.name,
     deletable: true,
-    description: `${t('character.magic.cost')}: ${ritual.cost}\n\n${t(
-      'character.magic.time',
-    )}: ${ritual.time}\n\n${t('character.difficultyClass.short')}: ${
-      ritual.difficultyClass
-    }\n\n${t('character.magic.components')}: ${ritual.components}\n\n${t(
-      'character.magic.effect',
-    )}: ${ritual.effect}`,
+    description: `${t('character.magic.cost')}: ${ritual.cost}\n
+${t('character.magic.duration')}: ${ritual.duration}\n
+${t('character.magic.preparationTime')}: ${ritual.preparationTime ?? ''}\n
+${t('character.difficultyClass.short')}: ${ ritual.difficultyClass }\n
+${t('character.magic.components')}: ${ritual.components}\n
+${t('character.magic.effect')}: ${ritual.effect}`,
     fields: [
       {
         displayName: t('character.generic.name'),
@@ -200,9 +226,14 @@ const openRitualSidebar = (idx: number) => {
         value: ritual.cost,
       },
       {
-        displayName: t('character.magic.time'),
+        displayName: t('character.magic.duration'),
         input: 'Text',
-        value: ritual.time,
+        value: ritual.duration,
+      },
+      {
+        displayName: t('character.magic.preparationTime'),
+        input: 'Text',
+        value: ritual.preparationTime ?? '',
       },
       {
         displayName: t('character.difficultyClass.full'),
@@ -224,10 +255,11 @@ const openRitualSidebar = (idx: number) => {
       const newRitual = {
         name: fields[0].value as string,
         cost: fields[1].value as string,
-        time: fields[2].value as string,
-        difficultyClass: fields[3].value as string,
-        components: fields[4].value as string,
-        effect: fields[5].value as string,
+        duration: fields[2].value as string,
+        preparationTime: fields[3].value as string,
+        difficultyClass: fields[4].value as string,
+        components: fields[5].value as string,
+        effect: fields[6].value as string,
       }
       const rituals = [...props.character.rituals]
       rituals[idx] = newRitual
