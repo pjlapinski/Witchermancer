@@ -252,12 +252,20 @@ input[type='number'] {
   -moz-appearance: textfield;
 }
 
+.arrow-left::before {
+  content: '\2039';
+}
+
+.arrow-right::before {
+  content: '\203A';
+}
+
 .arrow-down::before {
-  content: '\2B9F';
+  content: '\25BE';
 }
 
 .arrow-up::before {
-  content: '\2B9D';
+  content: '\25B4';
 }
 
 .delete::before {

@@ -1,9 +1,9 @@
 <template lang="pug">
 main#character-creation
   #character-creation-stage
-    button.stage-btn(:disabled='creationStep === 0', @click='--creationStep') &#11164;
+    button.stage-btn.arrow-left(:disabled='creationStep === 0', @click='--creationStep')
     span.fg-5 {{ $t(`characterCreation.step.${creationStep}`) }}
-    button.stage-btn(:disabled='creationStep === 6', @click='++creationStep') &#11166;
+    button.stage-btn.arrow-right(:disabled='creationStep === 6', @click='++creationStep')
   character-creation-race-stage(
     v-if='creationStep === 0',
     :character='character',
