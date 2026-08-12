@@ -197,7 +197,7 @@ const openWeaponSidebar = (idx: number) => {
         value: weapon.weight,
       },
       {
-        displayName: t('character.notes'),
+        displayName: t('character.notes.name'),
         input: 'TextArea',
         value: weapon.notes,
       },
@@ -295,7 +295,7 @@ const openArmorSidebar = (section: ArmorSection) => {
         value: item.weight,
       },
       {
-        displayName: t('character.notes'),
+        displayName: t('character.notes.name'),
         input: 'TextArea',
         value: item.notes,
       },
@@ -349,7 +349,7 @@ const openGear = (idx: number) => {
         value: item.weight,
       },
       {
-        displayName: t('character.notes'),
+        displayName: t('character.notes.name'),
         input: 'TextArea',
         value: item.notes,
       },

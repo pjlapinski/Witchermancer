@@ -17,7 +17,6 @@
     "papaparse": "^5.4.1",
     "pinia": "^2.0.33",
     "prettier": "^2.8.4",
-    "resize-textarea-vue3": "^1.1.3",
     "sass": "^1.101.0",
     "sass-loader": "^13.2.0",
     "vue": "^3.2.13",

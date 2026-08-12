@@ -12,7 +12,7 @@ section.character-creation-stage-content
       :placeholder='$t("characterCreation.step1.definingSkillName")',
       v-model='character.profession.definingSkill.name'
     )
-    resize-textarea.textarea-h3(
+    textarea.textarea-h3(
       :placeholder='$t("characterCreation.step1.definingSkillDesc")',
       v-model='character.profession.definingSkill.description'
     )

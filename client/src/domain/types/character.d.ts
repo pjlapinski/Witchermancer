@@ -146,6 +146,11 @@ export type Modifiers = {
   [key: string]: number
 }
 
+export type Note = {
+  title: string,
+  text: string
+}
+
 export type Character = {
   idString?: ''
   ownerEmail?: string
@@ -174,6 +179,6 @@ export type Character = {
   spells: Spell[]
   hexes: Hex[]
   rituals: Ritual[]
-  notes: string
+  notes: Note[]
   modifiers: Modifiers
 }

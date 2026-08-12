@@ -1,6 +1,6 @@
 ﻿<template lang="pug">
 nav
-  button#hamburger(@click='store.toggleSidebar()') &#9776;
+  button#hamburger(@click='store.toggleSidebar()')
   .flex-grow-1.d-flex.flex-center
     site-logo
 </template>
@@ -32,5 +32,9 @@ nav {
 
 #hamburger {
   @extend .btn-subtle;
+  
+  &::before {
+    content: '\2630';
+  }
 }
 </style>

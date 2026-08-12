@@ -21,9 +21,9 @@ section#life-section.character-sheet-section
     h3 {{ character.improvementPoints }}
   h2.px-5.my-3 {{ $t('character.lifePath') }}
   .px-5.d-flex.flex-col
-    resize-textarea.textarea-h3(
+    textarea.textarea-h3(
       v-model='character.lifePath',
-      @blur.native='$emit("save")',
+      @blur='$emit("save")',
       :placeholder='$t("character.lifePath")'
     )
 </template>

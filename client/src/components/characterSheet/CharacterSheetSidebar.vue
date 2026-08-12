@@ -31,10 +31,10 @@ aside#character-sheet-sidebar(:class='{ "character-sheet-sidebar-hidden": !open 
         v-model='field.value'
         @blur='$emit("edited", item.fields)'
       )
-      resize-textarea.textarea-h3(
+      textarea.textarea-h3(
         v-if='field.input === "TextArea" && open',
         v-model='field.value'
-        @blur.native='$emit("edited", item.fields)'
+        @blur='$emit("edited", item.fields)'
       )
       input.sidebar-input(
         v-if='field.input === "Checkbox" && open',

@@ -14,7 +14,7 @@ section.character-creation-stage-content
   h2.mt-3 {{ $t('character.socialStanding.name') }}
   select.input-h3(v-model='character.socialStanding')
     option(v-for='standing in AllSocialStandings', :value='standing') {{ $t(`character.socialStanding.${standing.toLocaleLowerCase()}`) }}
-  resize-textarea.textarea-h3(
+  textarea.textarea-h3(
     v-model='character.lifePath',
     :placeholder='$t("character.lifePath")'
   )

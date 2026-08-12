@@ -34,5 +34,5 @@ public class Character
     public Hex[] Hexes { get; set; }
     public Ritual[] Rituals { get; set; }
     public Dictionary<string, float> Modifiers { get; set; }
-    public string Notes { get; set; }
+    public Note[] Notes { get; set; }
 }

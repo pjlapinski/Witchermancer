@@ -251,3 +251,15 @@ input::-webkit-inner-spin-button {
 input[type='number'] {
   -moz-appearance: textfield;
 }
+
+.arrow-down::before {
+  content: '\2B9F';
+}
+
+.arrow-up::before {
+  content: '\2B9D';
+}
+
+.delete::before {
+  content: '\29BB';
+}

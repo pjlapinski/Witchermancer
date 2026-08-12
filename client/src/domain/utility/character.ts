@@ -147,7 +147,7 @@ export const createDefaultCharacter = (): Character => {
     spells: [],
     hexes: [],
     rituals: [],
-    notes: '',
+    notes: [],
     modifiers: {},
   }
 }

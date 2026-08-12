@@ -1,9 +1,9 @@
 <template lang="pug">
 main#character-creation
   #character-creation-stage
-    button.stage-btn(:disabled='creationStep === 0', @click='--creationStep') &lsaquo;
+    button.stage-btn(:disabled='creationStep === 0', @click='--creationStep') &#11164;
     span.fg-5 {{ $t(`characterCreation.step.${creationStep}`) }}
-    button.stage-btn(:disabled='creationStep === 6', @click='++creationStep') &rsaquo;
+    button.stage-btn(:disabled='creationStep === 6', @click='++creationStep') &#11166;
   character-creation-race-stage(
     v-if='creationStep === 0',
     :character='character',
@@ -96,28 +96,44 @@ const handleLangChanged = (lang: Language) => {
 
 const handleAddRacialPerk = () =>
   character.race.perks.push({ name: '', description: '' })
+
 const handleRemoveRacialPerk = () => {
   if (character.race.perks.length > 1) {
     character.race.perks.pop()
   }
 }
+
 const handleAddSpell = () =>
-  character.spells.push({ name: '', cost: '', effect: '', range: '' })
+  character.spells.push({    
+    name: '',
+    cost: '',
+    range: '',
+    duration: '',
+    defense: '',
+    effect: '',
+  })
 const handleRemoveSpell = () => character.spells.pop()
 
 const handleAddHex = () => {
-  character.hexes.push({ name: '', cost: '', effect: '' })
+  character.hexes.push({    
+    name: '',
+    cost: '',
+    danger: '',
+    requirementToLift: '',
+    effect: '',
+  })
 }
 const handleRemoveHex = () => character.hexes.pop()
 
 const handleAddRitual = () => {
   character.rituals.push({
     name: '',
-    components: '',
     cost: '',
-    difficultyClass: '',
+    difficultyClass: '0',
     effect: '',
-    time: '',
+    components: '',
+    duration: '',
+    preparationTime: '',
   })
 }
 const handleRemoveRitual = () => character.rituals.pop()
@@ -150,7 +166,7 @@ const toggleProfessionSkill = (name: string, skill: Skill) => {
 }
 
 .stage-btn {
-  @extend .btn-subtle, .px-5;
+  @extend .btn-subtle, .px-5, .h4, .py-3;
 
   color: var(--color-5);
 
@@ -181,6 +197,8 @@ const toggleProfessionSkill = (name: string, skill: Skill) => {
   @extend .input-h3;
 
   resize: none;
+  field-sizing: content;
+  min-height: 3rem;
 }
 
 .items-list {

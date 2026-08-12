@@ -49,6 +49,9 @@ main#character-sheet(v-if='!loading')
   character-sheet-notes-section(
     :class='{ "section-hidden": openSection !== "notes" }',
     :character='character',
+    @add-note='handleAddNote',
+    @delete-note='handleDeleteNote',
+    @move-note='handleMoveNote',
     @save='saveCharacter'
   )
   character-sheet-delete-section(
@@ -145,6 +148,7 @@ const handleAddRacialPerk = () => {
   character.value = newChar
   saveCharacter()
 }
+
 const handleAddProfessionAbility = () => {
   const newChar = character.value
   newChar.profession.abilities.unshift({
@@ -156,40 +160,49 @@ const handleAddProfessionAbility = () => {
   character.value = newChar
   saveCharacter()
 }
+
 const handleAddSpell = () => {
   const newChar = character.value
   newChar.spells.unshift({
     name: t('character.placeholders.spell'),
     cost: '',
-    effect: '',
     range: '',
+    duration: '',
+    defense: '',
+    effect: '',
   })
   character.value = newChar
   saveCharacter()
 }
+
 const handleAddHex = () => {
   const newChar = character.value
   newChar.hexes.unshift({
     name: t('character.placeholders.hex'),
     cost: '',
+    danger: '',
+    requirementToLift: '',
     effect: '',
   })
   character.value = newChar
   saveCharacter()
 }
+
 const handleAddRitual = () => {
   const newChar = character.value
   newChar.rituals.unshift({
     name: t('character.placeholders.ritual'),
-    components: '',
     cost: '',
     difficultyClass: '0',
     effect: '',
-    time: '',
+    components: '',
+    duration: '',
+    preparationTime: '',
   })
   character.value = newChar
   saveCharacter()
 }
+
 const handleAddGear = () => {
   const newChar = character.value
   newChar.gear.unshift({
@@ -201,6 +214,7 @@ const handleAddGear = () => {
   character.value = newChar
   saveCharacter()
 }
+
 const handleAddWeapon = () => {
   const newChar = character.value
   newChar.weapons.unshift({
@@ -227,13 +241,41 @@ const handleAddWeapon = () => {
   saveCharacter()
 }
 
+const handleAddNote = () => {
+  const newChar = character.value
+  newChar.notes.unshift({
+    title: '',
+    text: '',
+  })
+  character.value = newChar
+  saveCharacter()
+}
+
+const handleDeleteNote = (i: number) => {
+  const newChar = character.value
+  newChar.notes.splice(i, 1)
+  character.value = newChar
+  saveCharacter()
+}
+
+const handleMoveNote = (i: number, offset: number) => {
+  const newChar = character.value
+  const temp = newChar.notes[i]
+  newChar.notes[i] = newChar.notes[i + offset]
+  newChar.notes[i + offset] = temp
+  character.value = newChar
+  saveCharacter()
+}
+
 const fetchCharacter = async () => {
   character.value = (await getCharacter(route.params.id as string)) as Character
   loading.value = false
 }
+
 const saveCharacter = () => {
   updateCharacter(route.params.id as string, character.value)
 }
+
 const confirmDeleteCharacter = async () => {
   await deleteCharacter(route.params.id as string)
   router.push({ name: 'Home' })
@@ -323,6 +365,23 @@ fetchCharacter()
   & :nth-child(2):nth-last-child(1) {
     text-align: right;
   }
+}
+
+.note {
+  @extend .d-flex, .py-1, .mx-5;
+}
+
+.note-buttons {
+  @extend .d-flex, .flex-col, .flex-center;
+
+  flex-grow: 0;
+}
+
+.note-content {
+  @extend .d-flex, .flex-col, .ml-2;
+
+  gap: #{sizeof(1)};
+  flex-grow: 1
 }
 
 h3,
