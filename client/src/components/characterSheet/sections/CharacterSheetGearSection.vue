@@ -5,7 +5,7 @@ section#gear-section.character-sheet-section
     h3 {{ $t('character.carryWeight') }}
     h3 {{ round(getCarriedWeight(character)) }} / {{ getEncumbranceScore(character) }}
   .item-row(@click='openMoneySidebar')
-    h3 {{ $t('character.money') }}
+    h3 {{ $t('character.money.name') }}
     h3 {{ character.money }}
   .item-row.mb-5
     h3 {{ $t('character.encumbranceValue') }}
@@ -90,7 +90,7 @@ const openEncumbranceSidebar = () =>
 
 const openMoneySidebar = () =>
   props.openSidebarFn({
-    name: t('character.money'),
+    name: t('character.money.name'),
     deletable: false,
     fields: [
       {
