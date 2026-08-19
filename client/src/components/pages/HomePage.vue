@@ -2,6 +2,7 @@
 main#home-page-content(v-if='user.isAuthenticated')
   router-link.no-decor.btn-subtle.fg-5(:to='{ name: "CreateCharacter" }') {{ $t('home.createCharacter') }}
   .split-line
+  .loading(v-if='loading')
   characters-list(:characters='characters')
 main#home-page-content(v-else)
   h1 {{ $t('home.greeting') }}
@@ -15,14 +16,18 @@ import CharactersList from '@/components/home/CharactersList.vue'
 import { ref } from 'vue'
 import { getUserCharacters } from '@/domain/api'
 import { useUserStore } from '@/domain/store/user'
-import type { Character } from '@/domain/types/character.d.ts'
+import type { Character } from '@/domain/types/character'
 
 const user = useUserStore()
 
 let characters = ref<Character[]>([])
+let loading = ref(true)
 
 if (user.isAuthenticated)
-  getUserCharacters().then(chars => (characters.value = chars))
+  getUserCharacters().then(chars => {
+    loading.value = false
+    characters.value = chars
+  })
 
 const handleSignInBtnClick = () => {
   window.location.pathname = '/api/login'

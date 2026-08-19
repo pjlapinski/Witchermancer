@@ -272,6 +272,24 @@ input[type='number'] {
   content: '\21C6';
 }
 
+@keyframes loading-anim {
+  0% { rotate: 0deg; }
+  25% { rotate: -90deg; }
+  50% { rotate: -180deg; }
+  75% { rotate: -270deg; }
+  100% { rotate: -360deg; }
+}
+
+.loading {
+  &::before {
+    @extend .h1;
+
+    content: '\21BA';
+  }
+
+  animation: loading-anim 800ms infinite linear;
+}
+
 .delete::before {
   content: '\29BB';
 }
