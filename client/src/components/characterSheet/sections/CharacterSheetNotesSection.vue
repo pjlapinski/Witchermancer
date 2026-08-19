@@ -15,7 +15,7 @@ section#notes-section.character-sheet-section
           v-if='i !== character.notes.length - 1',
           @click='emit("move-note", i, 1)'
         )
-        button.btn-subtle.delete(
+        button.btn-subtle.delete.h5(
           @click='emit("delete-note", i)'
         )
       .note-content
