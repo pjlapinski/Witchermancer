@@ -268,6 +268,10 @@ input[type='number'] {
   content: '\25B4';
 }
 
+.arrows-left-right::before {
+  content: '\21C6';
+}
+
 .delete::before {
   content: '\29BB';
 }
