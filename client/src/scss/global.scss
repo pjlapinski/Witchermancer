@@ -167,8 +167,20 @@ $directions: (
   text-align: center;
 }
 
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
 .cursor-ptr {
   cursor: pointer;
+}
+
+.cursor-default {
+  cursor: default;
 }
 
 .decor-none {
@@ -291,5 +303,9 @@ input[type='number'] {
 }
 
 .delete::before {
+  content: '\2716';
+}
+
+.close::before {
   content: '\2716';
 }

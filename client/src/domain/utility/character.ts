@@ -138,7 +138,7 @@ export const createDefaultCharacter = (): Character => {
     socialStanding: 'Equal',
     lifePath: '',
     gear: [],
-    money: 0,
+    money: [],
     weapons: [],
     armor: {},
     currentHealthPoints: 0,

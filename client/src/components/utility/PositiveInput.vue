@@ -18,7 +18,7 @@ const emit = defineEmits(['update:modelValue', 'blur'])
 const handleInput = (event: Event) => {
   const str = input?.value?.value ?? ''
   if (str.endsWith('.')) return
-  const value = +str
+  const value = str.length === 0 ? 0 : +str
   if (!isNaN(value) && value < 0) {
     if (input.value !== null) input.value.value = '0'
     emit('update:modelValue', 0)

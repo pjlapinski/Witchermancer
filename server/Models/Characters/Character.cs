@@ -24,7 +24,7 @@ public class Character
     public string SocialStanding { get; set; }
     public string LifePath { get; set; }
     public Gear[] Gear { get; set; }
-    public int Money { get; set; }
+    public Money[] Money { get; set; }
     public Weapon[] Weapons { get; set; }
     public EquippedArmor Armor { get; set; }
     public int CurrentHealthPoints { get; set; }

@@ -45,6 +45,9 @@ main#character-sheet(v-if='!loading')
     :open-sidebar-fn='openSidebar',
     @add-gear='handleAddGear',
     @add-weapon='handleAddWeapon'
+    @add-currency='handleAddCurrency'
+    @delete-currency='handleDeleteCurrency'
+    @edit='saveCharacter'
   )
   character-sheet-notes-section(
     :class='{ "section-hidden": openSection !== "notes" }',
@@ -52,7 +55,7 @@ main#character-sheet(v-if='!loading')
     @add-note='handleAddNote',
     @delete-note='handleDeleteNote',
     @move-note='handleMoveNote',
-    @save='saveCharacter'
+    @edit='saveCharacter'
   )
   character-sheet-delete-section(
     :class='{ "section-hidden": openSection !== "delete" }',
@@ -80,6 +83,7 @@ import CharacterSheetRaceSection from '@/components/characterSheet/sections/Char
 import CharacterSheetSkillsSection from '@/components/characterSheet/sections/CharacterSheetSkillsSection.vue'
 import CharacterSheetSidebar from '../characterSheet/CharacterSheetSidebar.vue'
 import type { Character } from '@/domain/types/character'
+import { BaseCurrency } from "@/domain/types/money";
 import type {
   OpenedItem,
   SidebarFields,
@@ -267,6 +271,23 @@ const handleMoveNote = (i: number, offset: number) => {
   saveCharacter()
 }
 
+const handleDeleteCurrency = (i: number) => {
+  const newChar = character.value
+  newChar.money.splice(i, 1)
+  character.value = newChar
+  saveCharacter()
+}
+
+const handleAddCurrency = () => {
+  const newChar = character.value
+  newChar.money.push({
+    amount: 0,
+    currency: BaseCurrency
+  })
+  character.value = newChar
+  saveCharacter()
+}
+
 const fetchCharacter = async () => {
   character.value = (await getCharacter(route.params.id as string)) as Character
   loading.value = false
@@ -363,7 +384,7 @@ fetchCharacter()
   }
 
   & :nth-child(2):nth-last-child(1) {
-    text-align: right;
+    @extend .text-right;
   }
 }
 

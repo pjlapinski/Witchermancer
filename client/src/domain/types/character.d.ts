@@ -1,4 +1,4 @@
-﻿import { Armor, Gear, Weapon } from '@/domain/types/gear'
+﻿import { Armor, Gear, Weapon, Money } from '@/domain/types/gear'
 import { Hex, Ritual, Spell } from '@/domain/types/magic'
 import { SocialStanding } from '@/domain/types/social'
 import { Statistic } from '@/domain/types/statistic'
@@ -165,7 +165,7 @@ export type Character = {
   socialStanding: SocialStanding
   lifePath: string
   gear: Gear[]
-  money: number
+  money: Money[]
   weapons: Weapon[]
   armor: {
     head?: Armor

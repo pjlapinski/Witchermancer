@@ -5,7 +5,8 @@ import { useUserStore } from '@/domain/store/user'
 import { isUserAuthenticated, keepAlive } from '@/domain/api'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
-import { createI18n } from 'vue-i18n'
+import {createI18n, PluralizationRule} from 'vue-i18n'
+import {number} from "@intlify/core-base";
 
 const pinia = createPinia()
 
@@ -15,6 +16,9 @@ fetchLocalization().then(locales => {
     locale: localStorage.getItem('locale') ?? 'en',
     messages: locales,
     globalInjection: true,
+    pluralRules: {
+      pl: polishPlural
+    },
   })
 
   const app = createApp(App)
@@ -32,3 +36,14 @@ fetchLocalization().then(locales => {
     app.mount('#app')
   })
 })
+
+const polishPlural : PluralizationRule = (choice, choicesLen, orgRule) => {
+  // one, few, many
+  const abs = Math.abs(choice)
+  if (!Number.isInteger(abs)) return 1
+  if (abs === 1) return 0
+  const mod10 = abs % 10
+  const mod100 = abs % 100
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return 1
+  return 2
+}

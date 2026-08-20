@@ -22,12 +22,12 @@ section#notes-section.character-sheet-section
         input.input-h3(
           v-model='note.title',
           type='text',
-          @blur='$emit("save")',
+          @blur='$emit("edit")',
           :placeholder='$t("character.notes.title")'
         )
         textarea.textarea-h3(
           v-model='note.text',
-          @blur='$emit("save")',
+          @blur='$emit("edit")',
           :placeholder='$t("character.notes.text")'
         )
 </template>
@@ -37,5 +37,5 @@ import type { Character } from '@/domain/types/character'
 import PlusBtn from '@/components/characterSheet/PlusBtn.vue'
 
 const props = defineProps<{ character: Character }>()
-const emit = defineEmits(['save', 'add-note', 'delete-note', 'move-note'])
+const emit = defineEmits(['edit', 'add-note', 'delete-note', 'move-note'])
 </script>

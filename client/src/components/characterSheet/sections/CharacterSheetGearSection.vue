@@ -4,10 +4,30 @@ section#gear-section.character-sheet-section
   .item-row.mt-5(@click='openEncumbranceSidebar')
     h3 {{ $t('character.carryWeight') }}
     h3 {{ round(getCarriedWeight(character)) }} / {{ getEncumbranceScore(character) }}
-  .item-row(@click='openMoneySidebar')
+  .item-row(@click='moneyOpened = !moneyOpened')
     h3 {{ $t('character.money.name') }}
-    h3 {{ character.money }}
-  .item-row.mb-5
+    h3 {{ $t('character.money.approx', {n: getApproxCrownsValue(character.money)}) }}
+  template(v-if='moneyOpened')
+    .split-line
+    .pt-3
+      .item-row.cursor-default
+        h3 {{ $t('character.money.displayCurrency') }}
+        select.input(v-model='displayCurrency')
+          option(v-for='currency in DisplayCurrencies', :value='currency') {{ $t(`character.money.currency.${currency}`) }}
+      template(v-if='displayCurrency === "default"')
+        .item-row.cursor-default(v-for='(money, i) in character.money')
+          .money-item
+            button.btn-subtle.delete(@click='$emit("delete-currency", i)')
+            positive-input.input(v-model='money.amount' @blur='$emit("edit")')
+          select.input(v-model='money.currency', @change='$emit("edit")')
+            option(v-for='currency in Currencies', :value='currency') {{ $t(`character.money.currency.${currency}`) }}
+        plus-btn(@click='$emit("add-currency")')
+      template(v-else)
+        .item-row.cursor-default(v-for='money in character.money')
+          h3.text-right.pr-1 {{ round(convertCurrency(money, displayCurrency)) }}
+          h3 {{ $t(`character.money.currency.${money.currency}`) }}
+    .split-line
+  .item-row.mb-5.cursor-default
     h3 {{ $t('character.encumbranceValue') }}
     h3 {{ getCurrentEncumbranceValue(character) }}
   h2.mx-5.py-3 {{ $t('character.weapons') }}
@@ -28,12 +48,13 @@ section#gear-section.character-sheet-section
     h3(v-else) {{  character.armor[section]!.name  }} ({{ getStoppingPower(character, section) }} {{ $t('character.stoppingPower.abbr') }})
   h2.mx-5.py-3 {{ $t('character.gear') }}
   plus-btn(@click='$emit("add-gear")')
-  .item-row(v-for='(gear, i) in character.gear', @click='openGear(i)')
+  .item-row(v-for='(gear, i) in character.gear', @click='openGearSidebar(i)')
     h3 {{ gear.name }}
     h3 {{ gear.amount }}
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
 import type { Character } from '@/domain/types/character'
 import type { OpenSidebarFn } from '@/domain/types/components/characterSheetSidebar'
 import {
@@ -48,11 +69,13 @@ import {
 } from '@/domain/utility/character'
 import { round } from '@/domain/utility/math'
 import { formatDieRoll } from '@/domain/utility/string'
-import type { Concealment, Weapon } from '@/domain/types/gear'
+import type { Concealment, Weapon, DisplayCurrency, Currency } from '@/domain/types/gear'
 import { AllArmorSections, type ArmorSection } from '@/domain/types/armor'
 import PlusBtn from '@/components/characterSheet/PlusBtn.vue'
 import { useI18n } from 'vue-i18n'
 import { armorMod } from '@/domain/utility/character'
+import { getApproxCrownsValue, DisplayCurrencies, Currencies, convertCurrency } from "@/domain/types/money";
+import PositiveInput from "@/components/utility/PositiveInput.vue";
 
 const { t } = useI18n()
 
@@ -60,7 +83,9 @@ const props = defineProps<{
   character: Character
   openSidebarFn: OpenSidebarFn
 }>()
-const emit = defineEmits(['add-gear', 'add-weapon'])
+const emit = defineEmits(['edit', 'add-gear', 'add-weapon', 'add-currency', 'delete-currency'])
+const moneyOpened = ref(false)
+const displayCurrency = ref<DisplayCurrency>('default')
 
 const formatDmgBonus = (weapon: Weapon) => {
   if (weapon.accuracy === 0) return ''
@@ -84,24 +109,6 @@ const openEncumbranceSidebar = () =>
       return {
         ...props.character,
         modifiers: mods,
-      }
-    },
-  })
-
-const openMoneySidebar = () =>
-  props.openSidebarFn({
-    name: t('character.money.name'),
-    deletable: false,
-    fields: [
-      {
-        input: 'PositiveNumber',
-        value: props.character.money,
-      },
-    ],
-    editCallback(fields) {
-      return {
-        ...props.character,
-        money: fields[0].value as number,
       }
     },
   })
@@ -326,7 +333,7 @@ const openArmorSidebar = (section: ArmorSection) => {
   })
 }
 
-const openGear = (idx: number) => {
+const openGearSidebar = (idx: number) => {
   const item = props.character.gear[idx]
   props.openSidebarFn({
     name: item.name,
@@ -372,3 +379,13 @@ const openGear = (idx: number) => {
   })
 }
 </script>
+
+<style lang="scss">
+.money-item {
+  @extend .d-flex, .pr-1;
+
+  & :nth-child(1) {
+    max-width: #{sizeof(8)};
+  }
+}
+</style>
