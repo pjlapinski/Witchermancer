@@ -25,10 +25,24 @@ export const DisplayCurrencies = [
 export const getApproxCrownsValue = (money: Money[]) => 
     round(money.reduce((sum, curr) => (sum + convertCurrency(curr, BaseCurrency)), 0))
 
+const conversionTable: {[K in Currency]: number} = {
+    novigrad: 1,
+    temeria: 1,
+    nilfgaard: 1/3,
+    kaedwen: 3,
+    aedirn: 6,
+    cidaris: 2,
+    poviss: 1/4,
+    kovir: 1/8,
+    hengfors: 1/2,
+    skellige: 8,
+    rivia: 6
+}
+
 export const convertCurrency = (money: Money, currency: Currency) => {
     if (money.currency === currency) return money.amount
-    console.log('TODO: Convert currency')
-    return money.amount
+    const crowns = money.amount * (1 / conversionTable[money.currency])
+    return crowns * conversionTable[currency]
 }
 
 /* 
@@ -57,16 +71,4 @@ All converted to crowns:
 2 cidarian thalers
 8 cintrian ducats
 6 lyrian and rivian guldens
-
-Inverse:
-1 temerian oren
-3 nilfgaardian floren
-1/3 kaedweni ducats
-4 poviss bizant
-2 hengeforsian lintar
-8 kovirian mark
-1/6 aedirnian marks
-1/2 cidarian thalers
-1/8 cintrian ducats
-1/6 lyrian and rivian guldens
  */
