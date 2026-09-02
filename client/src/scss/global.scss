@@ -1,4 +1,7 @@
-﻿* {
+﻿@use "sass:color";
+@use "sass:list";
+
+* {
   padding: 0;
   margin: 0;
   font-family: 'Roboto', sans-serif;
@@ -9,6 +12,8 @@ $color-2: #2c2b3c;
 $color-3: #1b2432;
 $color-4: #121420;
 $color-5: #b76d68;
+
+$colors: $color-1, $color-2, $color-3, $color-4, $color-5;
 
 :root {
   --size-unit: 0.25rem;
@@ -44,8 +49,16 @@ $directions: (
     background-color: var(--color-#{$i});
   }
 
+  .bg-#{$i}-darken {
+    background-color: color.scale(list.nth($colors, $i), $lightness: -10%);
+  }
+
   .fg-#{$i} {
     color: var(--color-#{$i});
+  }
+
+  .fg-#{$i}-darken {
+    color: color.scale(list.nth($colors, $i), $lightness: -10%);
   }
 }
 
@@ -308,4 +321,12 @@ input[type='number'] {
 
 .close::before {
   content: '\2716';
+}
+
+.foldable-item-with-delete {
+  @extend .d-flex, .pr-1;
+
+  & :nth-child(1) {
+    max-width: #{sizeof(8)};
+  }
 }

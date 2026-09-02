@@ -20,6 +20,7 @@ public class Character
     public CharacterStatistics Statistics { get; set; }
     public Profession Profession { get; set; }
     public int ImprovementPoints { get; set; }
+    public ImprovementPoints[] ExtraImprovementPoints { get; set; }
     public string Reputation { get; set; }
     public string SocialStanding { get; set; }
     public string LifePath { get; set; }

@@ -151,6 +151,11 @@ export type Note = {
   text: string
 }
 
+export type ImprovementPoints = {
+  value: number,
+  description: string
+}
+
 export type Character = {
   idString?: ''
   ownerEmail?: string
@@ -160,7 +165,8 @@ export type Character = {
   age: number
   statistics: Statistics
   profession: Profession
-  improvementPoints: number
+  improvementPoints: number,
+  extraImprovementPoints: ImprovementPoints[],
   reputation: string
   socialStanding: SocialStanding
   lifePath: string

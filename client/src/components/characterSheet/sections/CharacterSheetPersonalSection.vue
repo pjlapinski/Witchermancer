@@ -19,6 +19,16 @@ section#life-section.character-sheet-section
   .item-row(@click='openImprovementPointsSidebar')
     h3 {{ $t('character.improvementPoints') }}
     h3 {{ character.improvementPoints }}
+  foldable-button
+    template(#button)
+      h3 {{ $t('character.extraImprovementPoints') }}
+    template(#opened)
+      .item-row.cursor-default(v-for='(ip, i) in character.extraImprovementPoints')
+        .foldable-item-with-delete
+          button.btn-subtle.delete(@click='$emit("delete-extra-ip", i)')
+          positive-input.input(v-model='ip.value' @blur='$emit("save")')
+        input.input(type='text' v-model='ip.description' @blur='$emit("save")')
+      plus-btn(@click='$emit("add-extra-ip")')
   h2.px-5.my-3 {{ $t('character.lifePath') }}
   .px-5.d-flex.flex-col
     textarea.textarea-h3(
@@ -33,6 +43,9 @@ import type { Character } from '@/domain/types/character'
 import type { OpenSidebarFn } from '@/domain/types/components/characterSheetSidebar'
 import { AllSocialStandings, type SocialStanding } from '@/domain/types/social'
 import { useI18n } from 'vue-i18n'
+import FoldableButton from "@/components/utility/FoldableButton.vue";
+import PlusBtn from "@/components/characterSheet/PlusBtn.vue";
+import PositiveInput from "@/components/utility/PositiveInput.vue";
 
 const { t } = useI18n()
 
@@ -40,7 +53,7 @@ const props = defineProps<{
   character: Character
   openSidebarFn: OpenSidebarFn
 }>()
-const emit = defineEmits(['save'])
+const emit = defineEmits(['save', 'add-extra-ip', 'delete-extra-ip'])
 
 const openNameSidebar = () =>
   props.openSidebarFn({

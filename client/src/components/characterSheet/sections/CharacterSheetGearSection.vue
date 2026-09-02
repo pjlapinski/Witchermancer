@@ -4,19 +4,18 @@ section#gear-section.character-sheet-section
   .item-row.mt-5(@click='openEncumbranceSidebar')
     h3 {{ $t('character.carryWeight') }}
     h3 {{ round(getCarriedWeight(character)) }} / {{ getEncumbranceScore(character) }}
-  .item-row(@click='moneyOpened = !moneyOpened')
-    h3 {{ $t('character.money.name') }}
-    h3 {{ $t('character.money.approx', {n: getApproxCrownsValue(character.money)}) }}
-  template(v-if='moneyOpened')
-    .split-line
-    .pt-3
+  foldable-button
+    template(#button)
+      h3 {{ $t('character.money.name') }}
+      h3 {{ $t('character.money.approx', {n: getApproxCrownsValue(character.money)}) }}
+    template(#opened)
       .item-row.cursor-default
         h3 {{ $t('character.money.displayCurrency') }}
         select.input(v-model='displayCurrency')
           option(v-for='currency in DisplayCurrencies', :value='currency') {{ $t(`character.money.currency.${currency}`) }}
       template(v-if='displayCurrency === "default"')
         .item-row.cursor-default(v-for='(money, i) in character.money')
-          .money-item
+          .foldable-item-with-delete
             button.btn-subtle.delete(@click='$emit("delete-currency", i)')
             positive-input.input(v-model='money.amount' @blur='$emit("edit")')
           select.input(v-model='money.currency', @change='$emit("edit")')
@@ -26,7 +25,6 @@ section#gear-section.character-sheet-section
         .item-row.cursor-default(v-for='money in character.money')
           h3.text-right.pr-1 {{ round(convertCurrency(money, displayCurrency)) }}
           h3 {{ $t(`character.money.currency.${money.currency}`) }}
-    .split-line
   .item-row.mb-5.cursor-default
     h3 {{ $t('character.encumbranceValue') }}
     h3 {{ getCurrentEncumbranceValue(character) }}
@@ -76,6 +74,7 @@ import { useI18n } from 'vue-i18n'
 import { armorMod } from '@/domain/utility/character'
 import { getApproxCrownsValue, DisplayCurrencies, Currencies, convertCurrency } from "@/domain/types/money";
 import PositiveInput from "@/components/utility/PositiveInput.vue";
+import FoldableButton from "@/components/utility/FoldableButton.vue";
 
 const { t } = useI18n()
 
@@ -84,7 +83,6 @@ const props = defineProps<{
   openSidebarFn: OpenSidebarFn
 }>()
 const emit = defineEmits(['edit', 'add-gear', 'add-weapon', 'add-currency', 'delete-currency'])
-const moneyOpened = ref(false)
 const displayCurrency = ref<DisplayCurrency>('default')
 
 const formatDmgBonus = (weapon: Weapon) => {
@@ -379,13 +377,3 @@ const openGearSidebar = (idx: number) => {
   })
 }
 </script>
-
-<style lang="scss">
-.money-item {
-  @extend .d-flex, .pr-1;
-
-  & :nth-child(1) {
-    max-width: #{sizeof(8)};
-  }
-}
-</style>

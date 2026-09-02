@@ -134,6 +134,7 @@ export const createDefaultCharacter = (): Character => {
       vigor: 0,
     },
     improvementPoints: 0,
+    extraImprovementPoints: [],
     reputation: '',
     socialStanding: 'Equal',
     lifePath: '',
@@ -164,7 +165,7 @@ export const damageMod = 'damage'
 export const armorMod = 'armor'
 export const vigorMod = 'vigor'
 
-export const getPhysicalTableScore = (character: Character) =>
+export const getBasePhysicalTableScore = (character: Character) =>
   Math.floor(
     (character.statistics.body.level +
       getModifier(character, 'body') +
@@ -172,16 +173,26 @@ export const getPhysicalTableScore = (character: Character) =>
       getModifier(character, 'will')) /
       2,
   )
+
+export const getPhysicalTableScore = (character: Character) =>
+    Math.floor(
+        (getStatistic(character, 'body') +
+            getModifier(character, 'body') +
+            getStatistic(character, 'will') +
+            getModifier(character, 'will')) /
+        2,
+    )
+
 export const getStunScore = (character: Character) =>
   getPhysicalTableScore(character) * 10 + getModifier(character, stunMod)
 export const getHealthPoints = (character: Character) =>
-  getPhysicalTableScore(character) * 5 + getModifier(character, healthMod)
+  getBasePhysicalTableScore(character) * 5 + getModifier(character, healthMod)
 export const getStaminaScore = (character: Character) =>
   getPhysicalTableScore(character) * 5 + getModifier(character, staminaMod)
 export const getRecoveryScore = (character: Character) =>
   getPhysicalTableScore(character) + getModifier(character, recoveryMod)
 export const getWoundThreshold = (character: Character) =>
-  getPhysicalTableScore(character) + getModifier(character, woundThresholdMod)
+  getBasePhysicalTableScore(character) + getModifier(character, woundThresholdMod)
 export const getRunScore = (character: Character) =>
   getStatistic(character, 'speed') * 3 + getModifier(character, runMod)
 export const getLeapScore = (character: Character) =>

@@ -8,6 +8,8 @@ main#character-sheet(v-if='!loading')
     :character='character',
     :open-sidebar-fn='openSidebar',
     @save='saveCharacter'
+    @add-extra-ip='handleAddExtraIp'
+    @delete-extra-ip='handleDeleteExtraIp'
   )
   character-sheet-derived-section(
     :class='{ "section-hidden": openSection !== "derived" }',
@@ -141,6 +143,24 @@ const handleSidebarDelete = () => {
   }
   saveCharacter()
   sidebarOpen.value = false
+}
+
+const handleAddExtraIp = () => {
+  const newChar = character.value
+  newChar.extraImprovementPoints ??= []
+  newChar.extraImprovementPoints.push({
+    value: 0,
+    description: '',
+  })
+  character.value = newChar
+  saveCharacter()
+}
+
+const handleDeleteExtraIp = (i: number) => {
+  const newChar = character.value
+  newChar.extraImprovementPoints.splice(i, 1)
+  character.value = newChar
+  saveCharacter()
 }
 
 const handleAddRacialPerk = () => {
