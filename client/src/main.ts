@@ -5,8 +5,8 @@ import { useUserStore } from '@/domain/store/user'
 import { isUserAuthenticated, keepAlive } from '@/domain/api'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
-import {createI18n, PluralizationRule} from 'vue-i18n'
-import {number} from "@intlify/core-base";
+import { createI18n, PluralizationRule } from 'vue-i18n'
+import Vue3TouchEvents, { type Vue3TouchEventsOptions } from 'vue3-touch-events'
 
 const pinia = createPinia()
 
@@ -23,6 +23,9 @@ fetchLocalization().then(locales => {
 
   const app = createApp(App)
   app.use(router)
+  app.use<Vue3TouchEventsOptions>(Vue3TouchEvents, {
+    disableClick: false,
+  })
   app.use(pinia)
   app.use(i18n)
 

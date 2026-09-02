@@ -1,10 +1,10 @@
 <template lang="pug">
-main#character-sheet(v-if='!loading')
+main#character-sheet(v-if='!loading', v-touch:swipe.left='swipeLeft', v-touch:swipe.right='swipeRight')
   #section-selector
     select(v-model='openSection')
-      option(v-for='section in sectionNames', :value='section') {{ $t(`characterSheet.section.${section}`) }}
+      option(v-for='(section, i) in sectionNames', :value='i') {{ $t(`characterSheet.section.${section}`) }}
   character-sheet-personal-section(
-    :class='{ "section-hidden": openSection !== "personal" }',
+    :class='{ "section-hidden": sectionNames[openSection] !== "personal" }',
     :character='character',
     :open-sidebar-fn='openSidebar',
     @save='saveCharacter'
@@ -12,29 +12,29 @@ main#character-sheet(v-if='!loading')
     @delete-extra-ip='handleDeleteExtraIp'
   )
   character-sheet-derived-section(
-    :class='{ "section-hidden": openSection !== "derived" }',
+    :class='{ "section-hidden": sectionNames[openSection] !== "derived" }',
     :character='character',
     :open-sidebar-fn='openSidebar'
   )
   character-sheet-race-section(
-    :class='{ "section-hidden": openSection !== "race" }',
+    :class='{ "section-hidden": sectionNames[openSection] !== "race" }',
     :character='character',
     :open-sidebar-fn='openSidebar',
     @add-perk='handleAddRacialPerk'
   )
   character-sheet-profession-section(
-    :class='{ "section-hidden": openSection !== "profession" }',
+    :class='{ "section-hidden": sectionNames[openSection] !== "profession" }',
     :character='character',
     :open-sidebar-fn='openSidebar',
     @add-ability='handleAddProfessionAbility'
   )
   character-sheet-skills-section(
-    :class='{ "section-hidden": openSection !== "stats" }',
+    :class='{ "section-hidden": sectionNames[openSection] !== "stats" }',
     :character='character',
     :open-sidebar-fn='openSidebar'
   )
   character-sheet-magic-section(
-    :class='{ "section-hidden": openSection !== "magic" }',
+    :class='{ "section-hidden": sectionNames[openSection] !== "magic" }',
     :character='character',
     :open-sidebar-fn='openSidebar',
     @add-hex='handleAddHex',
@@ -42,7 +42,7 @@ main#character-sheet(v-if='!loading')
     @add-spell='handleAddSpell'
   )
   character-sheet-gear-section(
-    :class='{ "section-hidden": openSection !== "gear" }',
+    :class='{ "section-hidden": sectionNames[openSection] !== "gear" }',
     :character='character',
     :open-sidebar-fn='openSidebar',
     @add-gear='handleAddGear',
@@ -52,7 +52,7 @@ main#character-sheet(v-if='!loading')
     @edit='saveCharacter'
   )
   character-sheet-notes-section(
-    :class='{ "section-hidden": openSection !== "notes" }',
+    :class='{ "section-hidden": sectionNames[openSection] !== "notes" }',
     :character='character',
     @add-note='handleAddNote',
     @delete-note='handleDeleteNote',
@@ -60,7 +60,7 @@ main#character-sheet(v-if='!loading')
     @edit='saveCharacter'
   )
   character-sheet-delete-section(
-    :class='{ "section-hidden": openSection !== "delete" }',
+    :class='{ "section-hidden": sectionNames[openSection] !== "delete" }',
     @confirm-delete='confirmDeleteCharacter'
   )
 character-sheet-sidebar(
@@ -123,12 +123,21 @@ const sidebarItem = ref<OpenedItem>({
   fields: [],
 })
 
-const openSection = ref<(typeof sectionNames)[number]>('personal')
+const openSection = ref<number>(0)
 
 const openSidebar = (item: OpenedItem) => {
   sidebarItem.value = item
   sidebarOpen.value = true
 }
+
+const swipeLeft = () => {
+  openSection.value = Math.min(openSection.value + 1, sectionNames.length - 1)
+}
+
+const swipeRight = () => {
+  openSection.value = Math.max(openSection.value - 1, 0)
+}
+
 const handleSidebarEdit = (fields: SidebarFields) => {
   if (sidebarItem.value.editCallback) {
     character.value = sidebarItem.value.editCallback(fields)
@@ -136,6 +145,7 @@ const handleSidebarEdit = (fields: SidebarFields) => {
   }
   saveCharacter()
 }
+
 const handleSidebarDelete = () => {
   if (sidebarItem.value.deleteCallback) {
     character.value = sidebarItem.value.deleteCallback()
@@ -327,12 +337,12 @@ fetchCharacter()
 
 <style lang="scss">
 #character-sheet {
-  display: flex;
-  flex-wrap: wrap;
+  min-height: 100%;
+  max-width: 100vw;
 }
 
 #section-selector {
-  @extend .bg-4, .w-100, .p-3;
+  @extend .bg-4, .p-3;
 
   & select {
     @extend .input, .h3, .w-100;
@@ -351,7 +361,7 @@ fetchCharacter()
   }
 
   .character-sheet-section {
-    flex: 0 0 100%;
+    flex: 1 0 100%;
     width: 100%;
   }
 
