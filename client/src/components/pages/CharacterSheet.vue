@@ -3,6 +3,7 @@ main#character-sheet(v-if='!loading', v-touch:swipe.left='swipeLeft', v-touch:sw
   #section-selector
     select(v-model='openSection')
       option(v-for='(section, i) in sectionNames', :value='i') {{ $t(`characterSheet.section.${section}`) }}
+    button.btn-subtle.save(@click='saveCharacter')
   character-sheet-personal-section(
     :class='{ "section-hidden": sectionNames[openSection] !== "personal" }',
     :character='character',
@@ -342,12 +343,17 @@ fetchCharacter()
 }
 
 #section-selector {
-  @extend .bg-4, .p-3;
+  @extend .bg-4, .p-3, .d-flex;
 
   & select {
-    @extend .input, .h3, .w-100;
+    @extend .input, .h3;
 
     background-color: var(--color-2);
+    flex-grow: 1;
+  }
+
+  & .save {
+    @extend .ml-2, .h1, .px-2, .bg-2;
   }
 }
 
