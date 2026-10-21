@@ -16,11 +16,17 @@ public static class Setup
 
         builder.Services
             .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-            .AddCookie(options => { options.LoginPath = "/api/login"; })
+            .AddCookie(options =>
+            {
+                options.LoginPath = "/api/login";
+                options.SlidingExpiration = true;
+                var authSettings = builder.Configuration.GetSection("AuthCookies").Get<AuthCookieSettings>();
+                options.ExpireTimeSpan = TimeSpan.FromDays(authSettings?.ExpirationDays ?? 7);
+            })
             .AddGoogle(options =>
             {
                 var settings = builder.Configuration.GetSection("Google").Get<GoogleSettings>();
-                options.ClientId = settings.ClientId;
+                options.ClientId = settings!.ClientId;
                 options.ClientSecret = settings.ClientSecret;
                 options.CallbackPath = new PathString("/api/signin-google");
                 options.AuthorizationEndpoint += "?prompt=consent";

@@ -15,7 +15,12 @@ public class AuthenticationRoutes : IRoutesDefinition
 
     private static IResult Login() =>
         Results.Challenge(
-            new AuthenticationProperties {RedirectUri = "/"},
+            new AuthenticationProperties
+            {
+                RedirectUri = "/",
+                IsPersistent = true,
+                AllowRefresh = true
+            },
             new List<string> {GoogleDefaults.AuthenticationScheme}
         );
 
