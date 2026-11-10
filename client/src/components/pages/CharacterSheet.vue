@@ -3,7 +3,7 @@ main#character-sheet(v-if='!loading', v-touch:swipe.left='swipeLeft', v-touch:sw
   #section-selector
     select(v-model='openSection')
       option(v-for='(section, i) in sectionNames', :value='i') {{ $t(`characterSheet.section.${section}`) }}
-    button.btn-subtle.save(@click='saveCharacter')
+    button.btn-subtle.save.fa.fa-floppy-o(@click='saveCharacter')
   character-sheet-personal-section(
     :class='{ "section-hidden": sectionNames[openSection] !== "personal" }',
     :character='character',
@@ -16,6 +16,7 @@ main#character-sheet(v-if='!loading', v-touch:swipe.left='swipeLeft', v-touch:sw
     :class='{ "section-hidden": sectionNames[openSection] !== "derived" }',
     :character='character',
     :open-sidebar-fn='openSidebar'
+    @add-injury='handleAddInjury'
   )
   character-sheet-race-section(
     :class='{ "section-hidden": sectionNames[openSection] !== "race" }',
@@ -85,7 +86,7 @@ import CharacterSheetProfessionSection from '@/components/characterSheet/section
 import CharacterSheetRaceSection from '@/components/characterSheet/sections/CharacterSheetRaceSection.vue'
 import CharacterSheetSkillsSection from '@/components/characterSheet/sections/CharacterSheetSkillsSection.vue'
 import CharacterSheetSidebar from '../characterSheet/CharacterSheetSidebar.vue'
-import type { Character } from '@/domain/types/character'
+import type {Character, Injury} from '@/domain/types/character'
 import { BaseCurrency } from "@/domain/types/money";
 import type {
   OpenedItem,
@@ -305,6 +306,13 @@ const handleMoveNote = (i: number, offset: number) => {
 const handleDeleteCurrency = (i: number) => {
   const newChar = character.value
   newChar.money.splice(i, 1)
+  character.value = newChar
+  saveCharacter()
+}
+
+const handleAddInjury = (inj: Injury) => {
+  const newChar = character.value
+  newChar.injuries.push(inj)
   character.value = newChar
   saveCharacter()
 }

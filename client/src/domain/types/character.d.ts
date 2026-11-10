@@ -156,6 +156,12 @@ export type ImprovementPoints = {
   description: string
 }
 
+export type Injury = {
+  name: string,
+  description: string,
+  duration: number
+}
+
 export type Character = {
   idString?: ''
   ownerEmail?: string
@@ -182,6 +188,7 @@ export type Character = {
   currentHealthPoints: number
   currentStamina: number
   currentStun: number
+  injuries: Injury[]
   spells: Spell[]
   hexes: Hex[]
   rituals: Ritual[]

@@ -10,6 +10,24 @@ section#derived-section.character-sheet-section
   .item-row(@click='openStaminaSidebar')
     h3 {{ $t('character.stamina') }}
     h3 {{ character.currentStamina }} / {{ getStaminaScore(character) }}
+  foldable-button
+    template(#button)
+      h3 {{ $t('character.injuries') }}
+    template(#opened)
+      .item-row.cursor-default
+        h3 {{ $t('character.generic.name') }}
+        h3 {{ $t('character.generic.duration') }}
+      .item-row(v-for='(injury, i) in character.injuries' @click='openInjurySidebar(injury, i)')
+        h3 {{ injury.name }}
+        h3 {{ injury.duration }}
+      .split-line.mb-2.mt-1
+      .d-flex.flex-col.px-5
+        input.input-h3(v-model='newInjuryName' :placeholder='$t("character.generic.name")')
+        textarea.mt-1.textarea-h3(v-model='newInjuryDesc' :placeholder='$t("character.generic.description")')
+      .item-row.cursor-default
+        h3 {{ $t('character.generic.duration') }}
+        positive-input.input(v-model='newInjuryDuration')
+      plus-btn(@click='addInjury')
   .item-row(@click='openRecoverySidebar')
     h3 {{ $t('character.recovery') }}
     h3 {{ getRecoveryScore(character) }}
@@ -31,7 +49,8 @@ section#derived-section.character-sheet-section
 </template>
 
 <script setup lang="ts">
-import type { Character } from '@/domain/types/character'
+import { ref } from 'vue'
+import type {Character, Injury} from '@/domain/types/character'
 import type { OpenSidebarFn } from '@/domain/types/components/characterSheetSidebar'
 import {
   getKickDamage,
@@ -56,6 +75,9 @@ import {
 import { round } from '@/domain/utility/math'
 import { formatDieRoll } from '@/domain/utility/string'
 import { useI18n } from 'vue-i18n'
+import FoldableButton from "@/components/utility/FoldableButton.vue";
+import PositiveInput from "@/components/utility/PositiveInput.vue";
+import PlusBtn from "@/components/characterSheet/PlusBtn.vue";
 
 const { t } = useI18n()
 
@@ -63,6 +85,12 @@ const props = defineProps<{
   character: Character
   openSidebarFn: OpenSidebarFn
 }>()
+
+const emit = defineEmits(['add-injury'])
+
+const newInjuryName = ref<string>()
+const newInjuryDesc = ref<string>()
+const newInjuryDuration = ref<number>(0)
 
 const openHealthSidebar = () =>
   props.openSidebarFn({
@@ -270,4 +298,59 @@ const openPunchSidebar = () =>
       }
     },
   })
+
+const openInjurySidebar = (injury: Injury, idx: number) => 
+    props.openSidebarFn({
+      name: injury.name,
+      deletable: true,
+      fields: [
+        {
+          displayName: t('character.generic.name'),
+          input: 'Text',
+          value: injury.name
+        },
+        {
+          displayName: t('character.generic.description'),
+          input: 'TextArea',
+          value: injury.description
+        },
+        {
+          displayName: t('character.generic.duration'),
+          input: 'PositiveNumber',
+          value: injury.duration
+        },
+      ],
+      editCallback(fields) {
+        const inj = [...props.character.injuries]
+        inj[idx] = {
+          name: fields[0].value as string,
+          description: fields[1].value as string,
+          duration: fields[2].value as number,
+        }
+        return {
+          ...props.character,
+          injuries: inj,
+        }
+      },
+      deleteCallback() {
+        const inj = [...props.character.injuries]
+        inj.splice(idx, 1)
+        return {
+          ...props.character,
+          injuries: inj
+        }
+      }
+    })
+
+const addInjury = () => {
+  if (newInjuryDuration.value! <= 0) return;
+  emit('add-injury', {
+    name: newInjuryName.value!,
+    description: newInjuryDesc.value!,
+    duration: newInjuryDuration.value!,
+  })
+  newInjuryName.value = ''
+  newInjuryDesc.value = ''
+  newInjuryDuration.value = 0
+}
 </script>

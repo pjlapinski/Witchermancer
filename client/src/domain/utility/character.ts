@@ -145,6 +145,7 @@ export const createDefaultCharacter = (): Character => {
     currentHealthPoints: 0,
     currentStamina: 0,
     currentStun: 0,
+    injuries: [],
     spells: [],
     hexes: [],
     rituals: [],
